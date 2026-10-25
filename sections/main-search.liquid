@@ -1,0 +1,47 @@
+{%- paginate search.results by 24 -%}
+  <section class="page-width search-page">
+    {% render 'pancarte-title', title: 'Recherche', style: 'sticker', tag: 'h1' %}
+
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-page__form">
+      <label class="visually-hidden" for="SearchPageInput">Rechercher</label>
+      <input id="SearchPageInput" class="input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="Un slogan, une couleur…">
+      <input type="hidden" name="options[prefix]" value="last">
+      <button type="submit" class="sticker-btn sticker-btn--red">Chercher</button>
+    </form>
+
+    {%- if search.performed -%}
+      <p class="search-page__count" role="status">
+        {%- if search.results_count == 0 -%}
+          Aucun résultat pour « {{ search.terms | escape }} ». Essaie un autre mot, ou propose-nous ce slogan !
+        {%- else -%}
+          {{ search.results_count }} résultat{% if search.results_count > 1 %}s{% endif %} pour « {{ search.terms | escape }} »
+        {%- endif -%}
+      </p>
+
+      {%- if search.results_count > 0 -%}
+        <div class="grid grid--products grid--cols-4">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {% render 'product-card', product: item, index: forloop.index0 %}
+            {%- else -%}
+              <article class="search-result">
+                <h2 class="search-result__title"><a href="{{ item.url }}">{{ item.title | escape }}</a></h2>
+                <p>{{ item.content | strip_html | truncatewords: 24 }}</p>
+              </article>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {% render 'pagination', paginate: paginate %}
+      {%- endif -%}
+    {%- endif -%}
+  </section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Résultats de recherche",
+  "tag": "div",
+  "class": "section-main-search",
+  "settings": []
+}
+{% endschema %}

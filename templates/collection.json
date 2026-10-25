@@ -1,0 +1,25 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "title_style": "pancarte",
+        "per_page": 24,
+        "columns_desktop": 4,
+        "enable_filters": true,
+        "enable_sorting": true
+      }
+    },
+    "reassurance": {
+      "type": "reassurance",
+      "blocks": {
+        "r1": { "type": "item", "settings": { "icon": "truck", "title": "Livraison partout en France", "text": "Offerte dès 60 €." } },
+        "r2": { "type": "item", "settings": { "icon": "chat", "title": "Service client 7j/7", "text": "De vrais humains, qui répondent vraiment." } },
+        "r3": { "type": "item", "settings": { "icon": "lock", "title": "Paiement sécurisé", "text": "Tes idées sont publiques, tes données non." } }
+      },
+      "block_order": ["r1", "r2", "r3"],
+      "settings": { "label": "Nos engagements" }
+    }
+  },
+  "order": ["main", "reassurance"]
+}

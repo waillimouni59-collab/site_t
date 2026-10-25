@@ -1,0 +1,73 @@
+{%- assign heading_id = 'Heading-' | append: section.id -%}
+<section class="manifesto-banner" aria-labelledby="{{ heading_id }}">
+  <div class="page-width manifesto-banner__inner">
+    <h2 id="{{ heading_id }}" class="manifesto-banner__title reveal">
+      {%- for block in section.blocks -%}
+        <span class="manifesto-banner__line manifesto-banner__line--{{ block.settings.highlight }}" {{ block.shopify_attributes }}>
+          <span class="manifesto-banner__ink">{{- block.settings.text | escape -}}</span>
+        </span>
+      {%- endfor -%}
+    </h2>
+    <div class="manifesto-banner__body">
+      {%- if section.settings.text != blank -%}
+        <div class="rte manifesto-banner__text">{{ section.settings.text }}</div>
+      {%- endif -%}
+      {%- if section.settings.button_label != blank -%}
+        <a href="{{ section.settings.button_link | default: '/pages/manifeste' }}" class="sticker-btn sticker-btn--paper">
+          {{- section.settings.button_label | escape -}}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+  {% render 'rubalise', text: section.settings.tape_text, tilt: 1 %}
+</section>
+
+{% schema %}
+{
+  "name": "Manifeste (bandeau)",
+  "tag": "div",
+  "class": "section-manifesto-banner",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Paragraphe",
+      "default": "<p>On ne fait pas de politique, on fait des t-shirts. Mais les mots qu'on imprime, on ne les a pas inventés : on les a lus sur des pancartes, des poteaux, des murs et des trottoirs. On les remet en circulation, sur ton dos.</p>"
+    },
+    { "type": "text", "id": "button_label", "label": "Texte du bouton", "default": "Lire le manifeste" },
+    { "type": "url", "id": "button_link", "label": "Lien du bouton" },
+    { "type": "text", "id": "tape_text", "label": "Texte de la rubalise", "default": "Les idées ne se confinent pas" }
+  ],
+  "blocks": [
+    {
+      "type": "line",
+      "name": "Ligne du titre",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Texte", "default": "Les idées, ça se discute." },
+        {
+          "type": "select",
+          "id": "highlight",
+          "label": "Mise en valeur",
+          "options": [
+            { "value": "none", "label": "Aucune" },
+            { "value": "red", "label": "Surligné rouge" },
+            { "value": "marker", "label": "Écrit au marqueur" }
+          ],
+          "default": "none"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Manifeste (bandeau)",
+      "blocks": [
+        { "type": "line", "settings": { "text": "Les idées, ça se discute.", "highlight": "none" } },
+        { "type": "line", "settings": { "text": "Ça se défend.", "highlight": "none" } },
+        { "type": "line", "settings": { "text": "Et maintenant, ça se porte.", "highlight": "red" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

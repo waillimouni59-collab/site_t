@@ -1,0 +1,33 @@
+{%- comment -%}
+  Guide des tailles repliable. Utilise la page choisie dans
+  Paramètres du thème > Produits, sinon un tableau standard XS à XXL.
+
+  Accepte :
+  - label : {String} texte du lien
+{%- endcomment -%}
+<details class="size-guide">
+  <summary class="size-guide__toggle link-btn">{{ label | default: 'Guide des tailles' | escape }}</summary>
+  <div class="size-guide__panel">
+    {%- if settings.size_guide_page != blank -%}
+      <div class="rte">{{ settings.size_guide_page.content }}</div>
+    {%- else -%}
+      <div class="size-guide__table-wrap">
+        <table class="size-guide__table">
+          <caption>Mesures du t-shirt à plat, en cm</caption>
+          <thead>
+            <tr><th scope="col">Taille</th><th scope="col">Largeur</th><th scope="col">Longueur</th><th scope="col">Tour de poitrine conseillé</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">XS</th><td>47</td><td>67</td><td>82–88</td></tr>
+            <tr><th scope="row">S</th><td>50</td><td>70</td><td>88–94</td></tr>
+            <tr><th scope="row">M</th><td>53</td><td>72</td><td>94–100</td></tr>
+            <tr><th scope="row">L</th><td>56</td><td>74</td><td>100–106</td></tr>
+            <tr><th scope="row">XL</th><td>59</td><td>76</td><td>106–112</td></tr>
+            <tr><th scope="row">XXL</th><td>62</td><td>78</td><td>112–118</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="size-guide__note">Entre deux tailles ? Prends au-dessus pour un look oversize, en dessous pour un look ajusté.</p>
+    {%- endif -%}
+  </div>
+</details>

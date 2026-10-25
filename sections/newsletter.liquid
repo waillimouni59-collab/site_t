@@ -1,0 +1,77 @@
+{%- assign heading_id = 'Heading-' | append: section.id -%}
+<section class="newsletter" aria-labelledby="{{ heading_id }}">
+  <div class="page-width newsletter__inner">
+    <div class="newsletter__poster reveal">
+      <span class="tape tape--tl"></span>
+      <span class="tape tape--tr"></span>
+      {% render 'pancarte-title', title: section.settings.title, style: 'pancarte', id: heading_id %}
+      {%- if section.settings.text != blank -%}
+        <div class="rte newsletter__text">{{ section.settings.text }}</div>
+      {%- endif -%}
+
+      {%- form 'customer', id: 'NewsletterForm', class: 'newsletter__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        {%- if form.posted_successfully? -%}
+          <p class="form-message form-message--success" role="status" tabindex="-1" autofocus>
+            {{ section.settings.success | escape }}
+          </p>
+        {%- else -%}
+          <div class="newsletter__field">
+            <label class="visually-hidden" for="NewsletterEmail-{{ section.id }}">Ton adresse e-mail</label>
+            <input
+              id="NewsletterEmail-{{ section.id }}"
+              class="input"
+              type="email"
+              name="contact[email]"
+              value="{{ form.email }}"
+              placeholder="ton@email.fr"
+              autocomplete="email"
+              autocorrect="off"
+              autocapitalize="off"
+              required
+              {% if form.errors %}aria-invalid="true" aria-describedby="NewsletterError-{{ section.id }}"{% endif %}
+            >
+            <button type="submit" class="sticker-btn sticker-btn--red" name="commit">
+              {{- section.settings.button_label | escape -}}
+            </button>
+          </div>
+          {%- if form.errors -%}
+            <p id="NewsletterError-{{ section.id }}" class="form-message form-message--error" role="alert">
+              {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+            </p>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endform -%}
+
+      {%- if section.settings.legal != blank -%}
+        <div class="newsletter__legal">{{ section.settings.legal }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "div",
+  "class": "section-newsletter",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "Rejoins le mouvement" },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texte",
+      "default": "<p>Les nouveaux drops, les slogans trouvés dans la semaine et zéro spam. Promis, on n'écrit que quand on a quelque chose à dire.</p>"
+    },
+    { "type": "text", "id": "button_label", "label": "Texte du bouton", "default": "Je m'inscris" },
+    { "type": "text", "id": "success", "label": "Message de confirmation", "default": "Bienvenue dans le mouvement ! Check ta boîte mail." },
+    {
+      "type": "richtext",
+      "id": "legal",
+      "label": "Mention RGPD",
+      "default": "<p>En t'inscrivant, tu acceptes de recevoir nos e-mails. Tu peux te désinscrire à tout moment via le lien en bas de chaque message. Tes données ne sont ni vendues ni partagées. Plus d'infos dans notre politique de confidentialité.</p>"
+    }
+  ],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}

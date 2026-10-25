@@ -1,0 +1,40 @@
+{
+  "general": {
+    "password": {
+      "coming_soon": "Bientôt"
+    }
+  },
+  "accessibility": {
+    "skip_to_content": "Aller au contenu",
+    "open_menu": "Ouvrir le menu",
+    "close": "Fermer",
+    "search": "Rechercher",
+    "account": "Mon compte",
+    "cart": "Panier",
+    "cart_count": {
+      "zero": "Panier vide",
+      "one": "{{ count }} article dans le panier",
+      "other": "{{ count }} articles dans le panier"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Ajouter au panier",
+      "sold_out": "Épuisé",
+      "unavailable": "Indisponible",
+      "quantity": "Quantité"
+    }
+  },
+  "cart": {
+    "title": "Ton panier",
+    "empty": "Ton panier est vide.",
+    "empty_cta": "Trouver mon slogan",
+    "remove": "Retirer",
+    "subtotal": "Total",
+    "update": "Mettre à jour",
+    "checkout": "Commander",
+    "error": "Oups, ça n'a pas marché. Réessaie dans un instant.",
+    "free_shipping_remaining_html": "Plus que <strong>{{ amount }}</strong> pour la livraison offerte.",
+    "free_shipping_reached": "Livraison offerte débloquée. Bien joué !"
+  }
+}

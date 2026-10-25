@@ -1,0 +1,45 @@
+{%- comment -%}
+  « Tu aimeras aussi » : chargé via l'API de recommandations de Shopify.
+{%- endcomment -%}
+{%- assign heading_id = 'Heading-' | append: section.id -%}
+<section
+  class="section recommendations"
+  data-recommendations
+  data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.products_to_show }}&intent=related"
+  aria-labelledby="{{ heading_id }}"
+>
+  {%- if recommendations.performed? and recommendations.products_count > 0 -%}
+    {% render 'rubalise', text: section.settings.tape_text %}
+    <div class="page-width">
+      <div class="section__head">
+        {% render 'pancarte-title', title: section.settings.title, style: 'pancarte', id: heading_id %}
+      </div>
+      <div class="grid grid--products grid--cols-4">
+        {%- for product in recommendations.products -%}
+          {% render 'product-card', product: product, index: forloop.index0 %}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Tu aimeras aussi",
+  "tag": "div",
+  "class": "section-recommendations",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "Tu aimeras aussi" },
+    { "type": "text", "id": "tape_text", "label": "Texte de la rubalise", "default": "Porte tes idées" },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Nombre de produits",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    }
+  ]
+}
+{% endschema %}

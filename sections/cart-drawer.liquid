@@ -1,0 +1,31 @@
+{%- comment -%}
+  Panier en tiroir latéral. Re-rendu par l'API Ajax Cart de Shopify
+  (paramètre « sections » de /cart/add.js et /cart/change.js).
+{%- endcomment -%}
+<div class="drawer" id="CartDrawer" data-cart-drawer hidden>
+  <div class="drawer__overlay" data-cart-close></div>
+  <div
+    class="drawer__panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="CartDrawerTitle"
+    tabindex="-1"
+  >
+    <div class="drawer__head">
+      <h2 id="CartDrawerTitle" class="drawer__title">{{ 'cart.title' | t }}</h2>
+      <button type="button" class="icon-btn" data-cart-close aria-label="{{ 'accessibility.close' | t }}">
+        {% render 'icon', name: 'close' %}
+      </button>
+    </div>
+    <div class="drawer__body" data-drawer-content>
+      {% render 'cart-contents', context: 'drawer' %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Panier (tiroir)",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,53 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "kicker": { "type": "kicker" },
+        "title": { "type": "title" },
+        "price": { "type": "price" },
+        "variants": { "type": "variant_picker" },
+        "size_guide": { "type": "size_guide", "settings": { "label": "Guide des tailles" } },
+        "buy": { "type": "buy_buttons", "settings": { "show_dynamic_checkout": false } },
+        "origin": { "type": "slogan_origin", "settings": { "title": "D'où vient ce slogan ?" } },
+        "description": { "type": "text", "settings": { "use_description": true } },
+        "matiere": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Matière",
+            "content": "<p>100 % coton biologique, 180 g/m². Coupe droite, un poil oversize. Impression au dos, petit rappel du slogan devant.</p>",
+            "open": false
+          }
+        },
+        "entretien": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Entretien",
+            "content": "<p>Lavage à 30 °C, à l'envers. Pas de sèche-linge, pas de repassage sur l'impression. Comme les bonnes idées : ça dure si on en prend soin.</p>",
+            "open": false
+          }
+        },
+        "livraison": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Livraison et retours",
+            "content": "<p>Expédié sous 48 h ouvrées partout en France. Livraison offerte dès 60 €. Retours gratuits sous 30 jours.</p>",
+            "open": false
+          }
+        },
+        "share": { "type": "share", "settings": { "label": "Partager ce slogan" } }
+      },
+      "block_order": ["kicker", "title", "price", "variants", "size_guide", "buy", "origin", "description", "matiere", "entretien", "livraison", "share"],
+      "settings": {}
+    },
+    "recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "title": "Tu aimeras aussi",
+        "tape_text": "Porte tes idées",
+        "products_to_show": 4
+      }
+    }
+  },
+  "order": ["main", "recommendations"]
+}

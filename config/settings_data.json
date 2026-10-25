@@ -1,0 +1,25 @@
+{
+  "current": "Default",
+  "presets": {
+    "Default": {
+      "color_paper": "#F4F0E6",
+      "color_ink": "#111111",
+      "color_red": "#D11A1F",
+      "color_yellow": "#FFD400",
+      "color_pink": "#FF8FC7",
+      "color_sky": "#8FD3FF",
+      "color_kraft": "#C9A46A",
+      "page_width": 1400,
+      "enable_tilt": true,
+      "enable_animations": true,
+      "cart_type": "drawer",
+      "free_shipping_threshold": 60,
+      "cart_note_offer": "3 t-shirts achetés = le 4e offert",
+      "cart_show_note": false,
+      "card_show_back": true,
+      "card_ratio": "1 / 1",
+      "card_fit": "contain",
+      "card_show_swatches": true
+    }
+  }
+}

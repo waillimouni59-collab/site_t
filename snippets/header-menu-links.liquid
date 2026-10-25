@@ -1,0 +1,25 @@
+{%- comment -%}
+  Liens du menu principal. Si aucun menu n'est configuré dans
+  Boutique en ligne > Navigation, on affiche les liens par défaut de la marque.
+
+  Accepte :
+  - menu : {Object} linklist
+{%- endcomment -%}
+{%- if menu != blank and menu.links.size > 0 -%}
+  {%- for link in menu.links -%}
+    <li>
+      <a
+        href="{{ link.url }}"
+        class="nav-link{% if link.active or link.child_active %} is-active{% endif %}"
+        {% if link.active %}aria-current="page"{% endif %}
+      >
+        {{- link.title | escape -}}
+      </a>
+    </li>
+  {%- endfor -%}
+{%- else -%}
+  <li><a href="{{ routes.root_url }}" class="nav-link">Accueil</a></li>
+  <li><a href="{{ routes.collections_url }}" class="nav-link">Collections</a></li>
+  <li><a href="{{ routes.all_products_collection_url }}" class="nav-link">Tous les t-shirts</a></li>
+  <li><a href="{{ routes.root_url | append: '/pages/manifeste' | replace: '//', '/' }}" class="nav-link">Le manifeste</a></li>
+{%- endif -%}

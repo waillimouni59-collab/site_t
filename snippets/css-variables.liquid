@@ -1,0 +1,19 @@
+{%- comment -%}
+  Couleurs réglables depuis l'éditeur de thème (Paramètres du thème > Couleurs).
+{%- endcomment -%}
+<style>
+  :root {
+    --c-paper: {{ settings.color_paper }};
+    --c-ink: {{ settings.color_ink }};
+    --c-red: {{ settings.color_red }};
+    --c-yellow: {{ settings.color_yellow }};
+    --c-pink: {{ settings.color_pink }};
+    --c-sky: {{ settings.color_sky }};
+    --c-kraft: {{ settings.color_kraft }};
+    --c-paper-rgb: {{ settings.color_paper.red }}, {{ settings.color_paper.green }}, {{ settings.color_paper.blue }};
+    --c-ink-rgb: {{ settings.color_ink.red }}, {{ settings.color_ink.green }}, {{ settings.color_ink.blue }};
+    --page-width: {{ settings.page_width }}px;
+    --card-ratio: {{ settings.card_ratio | default: '1 / 1' }};
+    --card-fit: {{ settings.card_fit | default: 'contain' }};
+  }
+</style>

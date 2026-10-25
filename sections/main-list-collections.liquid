@@ -1,0 +1,46 @@
+<section class="page-width list-collections">
+  {% render 'pancarte-title', title: section.settings.title, style: 'pancarte', tag: 'h1' %}
+  <ul class="list-collections__grid" role="list">
+    {%- for collection in collections -%}
+      {%- unless collection.handle == 'frontpage' -%}
+        {%- liquid
+          assign style = 'pancarte'
+          case collection.handle
+            when 'stickers'
+              assign style = 'sticker'
+            when 'murs'
+              assign style = 'mur'
+            when 'bitume'
+              assign style = 'bitume'
+          endcase
+          assign tilt = forloop.index | modulo: 5 | minus: 2
+        -%}
+        <li class="collection-tile showcase--{{ style }} reveal" style="--tilt: {{ tilt | times: 0.7 }}deg;">
+          <a href="{{ collection.url }}" class="collection-tile__link">
+            <span class="collection-tile__media">
+              {%- assign tile_image = collection.featured_image | default: collection.products.first.featured_media.preview_image -%}
+              {%- if tile_image != blank -%}
+                {{ tile_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '300, 450, 600, 900', sizes: '(min-width: 990px) 33vw, 50vw', alt: '' }}
+              {%- else -%}
+                {{ 'collection-apparel-1' | placeholder_svg_tag: 'placeholder' }}
+              {%- endif -%}
+            </span>
+            <span class="sign sign--{{ style }} collection-tile__title"><span class="sign__text">{{ collection.title | escape }}</span></span>
+            <span class="collection-tile__count">{{ collection.products_count }} t-shirt{% if collection.products_count > 1 %}s{% endif %}</span>
+          </a>
+        </li>
+      {%- endunless -%}
+    {%- endfor -%}
+  </ul>
+</section>
+
+{% schema %}
+{
+  "name": "Liste des collections",
+  "tag": "div",
+  "class": "section-list-collections",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "Les collections" }
+  ]
+}
+{% endschema %}

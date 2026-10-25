@@ -1,0 +1,130 @@
+{%- liquid
+  assign img = section.settings.image
+  assign img_mobile = section.settings.image_mobile | default: img
+  assign alt = img.alt | default: section.settings.image_alt
+-%}
+
+<section
+  class="hero hero--{{ section.settings.height }} hero--align-{{ section.settings.align }}"
+  style="--overlay: {{ section.settings.overlay | divided_by: 100.0 }};"
+  aria-labelledby="HeroTitle-{{ section.id }}"
+>
+  <div class="hero__media">
+    {%- if img != blank -%}
+      <picture>
+        <source
+          media="(max-width: 749px)"
+          srcset="{{ img_mobile | image_url: width: 750 }} 750w, {{ img_mobile | image_url: width: 1100 }} 1100w"
+          sizes="100vw"
+        >
+        {{
+          img
+          | image_url: width: 2400
+          | image_tag:
+            class: 'hero__img',
+            widths: '1100, 1500, 1800, 2400',
+            sizes: '100vw',
+            loading: 'eager',
+            fetchpriority: 'high',
+            alt: alt
+        }}
+      </picture>
+    {%- else -%}
+      <img
+        class="hero__img"
+        src="{{ 'hero-fallback.jpg' | asset_url }}"
+        alt="{{ section.settings.image_alt | escape }}"
+        width="736"
+        height="981"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {%- endif -%}
+  </div>
+
+  <div class="hero__content page-width">
+    {%- if section.settings.kicker != blank -%}
+      <p class="hero__kicker tape-label">{{ section.settings.kicker | escape }}</p>
+    {%- endif -%}
+    <h2 id="HeroTitle-{{ section.id }}" class="hero__title">{{ section.settings.title | escape | newline_to_br }}</h2>
+    {%- if section.settings.text != blank -%}
+      <div class="hero__text">{{ section.settings.text }}</div>
+    {%- endif -%}
+    {%- if section.settings.button_label != blank -%}
+      <a href="{{ section.settings.button_link | default: '#le-drop' }}" class="sticker-btn sticker-btn--{{ section.settings.button_style }} sticker-btn--large">
+        {{- section.settings.button_label | escape -}}
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "class": "section-hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Idéalement un t-shirt vu de dos, porté dans la rue. 2400 × 1400 px conseillé."
+    },
+    { "type": "image_picker", "id": "image_mobile", "label": "Image mobile (facultatif)" },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Texte alternatif par défaut",
+      "default": "Manif dans la rue : une pancarte en carton écrite au marqueur"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Hauteur",
+      "options": [
+        { "value": "full", "label": "Plein écran" },
+        { "value": "large", "label": "Grande" },
+        { "value": "medium", "label": "Moyenne" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Position du texte",
+      "options": [
+        { "value": "left", "label": "En bas à gauche" },
+        { "value": "center", "label": "Centré" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "overlay",
+      "label": "Assombrir l'image",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 35
+    },
+    { "type": "text", "id": "kicker", "label": "Petit texte au-dessus", "default": "Drop n°1" },
+    { "type": "textarea", "id": "title", "label": "Titre", "default": "On prépare quelque chose." },
+    { "type": "richtext", "id": "text", "label": "Texte" },
+    { "type": "text", "id": "button_label", "label": "Texte du bouton", "default": "Voir le drop" },
+    { "type": "url", "id": "button_link", "label": "Lien du bouton", "info": "Vide : descend jusqu'à la grille « Le drop »." },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Couleur du sticker",
+      "options": [
+        { "value": "yellow", "label": "Jaune" },
+        { "value": "red", "label": "Rouge" },
+        { "value": "pink", "label": "Rose" },
+        { "value": "paper", "label": "Blanc" }
+      ],
+      "default": "yellow"
+    }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}

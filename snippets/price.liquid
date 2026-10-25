@@ -1,0 +1,28 @@
+{%- comment -%}
+  Prix en police monospace.
+  Accepte :
+  - product : {Object}
+  - variant : {Object} (facultatif, sinon variante sélectionnée ou première disponible)
+  - class : {String} (facultatif)
+{%- endcomment -%}
+{%- liquid
+  assign target = variant | default: product.selected_or_first_available_variant
+  assign price = target.price
+  assign compare = target.compare_at_price
+  assign varies = false
+  if variant == blank and product.price_varies
+    assign varies = true
+    assign price = product.price_min
+  endif
+-%}
+<p class="price{% if compare > price %} price--sale{% endif %}{% if class %} {{ class }}{% endif %}" data-price>
+  {%- if compare > price -%}
+    <span class="visually-hidden">Prix normal</span>
+    <s class="price__compare">{{ compare | money }}</s>
+    <span class="visually-hidden">Prix promo</span>
+  {%- endif -%}
+  <span class="price__current">
+    {%- if varies %}Dès {% endif -%}
+    {{- price | money -}}
+  </span>
+</p>

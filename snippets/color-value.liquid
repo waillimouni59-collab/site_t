@@ -1,0 +1,28 @@
+{%- comment -%}
+  Renvoie une couleur CSS pour une valeur d'option de couleur.
+  Utilise d'abord la pastille définie dans Shopify (valeur liée à un métaobjet),
+  sinon un nom de couleur connu, sinon un gris.
+
+  Accepte :
+  - value : {Object|String} valeur d'option
+{%- endcomment -%}
+{%- if value.swatch.color -%}
+  {{- value.swatch.color -}}
+{%- else -%}
+  {%- assign key = value | handleize -%}
+  {%- case key -%}
+    {%- when 'blanc', 'white', 'blanc-casse', 'ecru', 'creme' -%}#F7F5EF
+    {%- when 'noir', 'black' -%}#151515
+    {%- when 'rouge', 'red' -%}#D11A1F
+    {%- when 'jaune', 'yellow' -%}#FFD400
+    {%- when 'rose', 'pink', 'fuchsia' -%}#FF3FA4
+    {%- when 'bleu', 'blue', 'bleu-ciel', 'sky' -%}#8FD3FF
+    {%- when 'bleu-marine', 'marine', 'navy' -%}#1D2A4D
+    {%- when 'vert', 'green', 'kaki' -%}#4E6B3A
+    {%- when 'gris', 'grey', 'gray', 'gris-chine' -%}#9A9A9A
+    {%- when 'beige', 'kraft', 'sable' -%}#C9A46A
+    {%- when 'orange' -%}#F26B1D
+    {%- when 'violet', 'purple' -%}#7A3FB8
+    {%- else -%}#BBBBBB
+  {%- endcase -%}
+{%- endif -%}

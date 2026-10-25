@@ -1,0 +1,110 @@
+{%- liquid
+  assign coll = section.settings.collection
+  if coll == blank
+    assign coll = collections.all
+  endif
+  assign limit = section.settings.products_to_show
+  assign heading_id = 'Heading-' | append: section.id
+-%}
+
+<section
+  {% if section.settings.anchor != blank %}id="{{ section.settings.anchor | handleize }}"{% endif %}
+  class="section section--{{ section.settings.background }}"
+  aria-labelledby="{{ heading_id }}"
+>
+  <div class="page-width">
+    <div class="section__head">
+      {% render 'pancarte-title', title: section.settings.title, style: section.settings.title_style, id: heading_id %}
+      {%- if section.settings.text != blank -%}
+        <div class="section__intro rte">{{ section.settings.text }}</div>
+      {%- endif -%}
+    </div>
+
+    <div class="grid grid--products grid--cols-{{ section.settings.columns_desktop }}">
+      {%- if coll.products.size > 0 -%}
+        {%- for product in coll.products limit: limit -%}
+          {% render 'product-card', product: product, index: forloop.index0 %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..limit) -%}
+          {% render 'product-card', index: forloop.index0 %}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_view_all and coll.products_count > limit -%}
+      <div class="section__foot">
+        <a href="{{ coll.url }}" class="sticker-btn">{{ section.settings.view_all_label | escape }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Grille de produits",
+  "tag": "div",
+  "class": "section-featured-collection",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "Le drop" },
+    {
+      "type": "select",
+      "id": "title_style",
+      "label": "Style du titre",
+      "options": [
+        { "value": "pancarte", "label": "Pancarte en carton" },
+        { "value": "sticker", "label": "Sticker" },
+        { "value": "mur", "label": "Tag sur un mur" },
+        { "value": "bitume", "label": "Affiche de propagande" }
+      ],
+      "default": "pancarte"
+    },
+    { "type": "richtext", "id": "text", "label": "Texte d'intro", "default": "<p>Tout frais, tout chaud, ramassé sur le bitume cette semaine.</p>" },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Par défaut : tous les produits."
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Nombre de produits",
+      "min": 2,
+      "max": 16,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Colonnes sur ordinateur",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Fond",
+      "options": [
+        { "value": "paper", "label": "Papier" },
+        { "value": "poster", "label": "Affiches collées" },
+        { "value": "kraft", "label": "Carton kraft" }
+      ],
+      "default": "paper"
+    },
+    {
+      "type": "text",
+      "id": "anchor",
+      "label": "Ancre",
+      "info": "Permet de faire un lien vers cette section, ex. #le-drop",
+      "default": "le-drop"
+    },
+    { "type": "checkbox", "id": "show_view_all", "label": "Bouton « Tout voir »", "default": true },
+    { "type": "text", "id": "view_all_label", "label": "Texte du bouton", "default": "Tout voir" }
+  ],
+  "presets": [{ "name": "Grille de produits (Le drop)" }]
+}
+{% endschema %}

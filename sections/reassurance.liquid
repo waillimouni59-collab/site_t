@@ -1,0 +1,61 @@
+<section class="reassurance" aria-label="{{ section.settings.label | escape }}">
+  {% render 'rubalise' %}
+  <div class="page-width">
+    <ul class="reassurance__list" role="list">
+      {%- for block in section.blocks -%}
+        <li class="reassurance__item reveal" style="--delay: {{ forloop.index0 | times: 80 }}ms;" {{ block.shopify_attributes }}>
+          <span class="reassurance__icon">{% render 'icon', name: block.settings.icon %}</span>
+          <h3 class="reassurance__title">{{ block.settings.title | escape }}</h3>
+          {%- if block.settings.text != blank -%}
+            <p class="reassurance__text">{{ block.settings.text | escape }}</p>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Réassurance",
+  "tag": "div",
+  "class": "section-reassurance",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "label", "label": "Titre (lecteurs d'écran)", "default": "Nos engagements" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Engagement",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icône",
+          "options": [
+            { "value": "truck", "label": "Camion" },
+            { "value": "chat", "label": "Bulle" },
+            { "value": "lock", "label": "Cadenas" },
+            { "value": "return", "label": "Retour" },
+            { "value": "heart", "label": "Cœur" }
+          ],
+          "default": "truck"
+        },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Livraison partout en France" },
+        { "type": "text", "id": "text", "label": "Texte" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Réassurance",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "truck", "title": "Livraison partout en France", "text": "Offerte dès 60 €, même en zone blanche." } },
+        { "type": "item", "settings": { "icon": "chat", "title": "Service client 7j/7", "text": "De vrais humains, qui répondent vraiment." } },
+        { "type": "item", "settings": { "icon": "lock", "title": "Paiement sécurisé", "text": "Tes idées sont publiques, tes données non." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

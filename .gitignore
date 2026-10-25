@@ -1,0 +1,6 @@
+dist/
+.shopify/
+__pycache__/
+.DS_Store
+Thumbs.db
+.claude/

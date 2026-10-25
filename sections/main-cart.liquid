@@ -1,0 +1,17 @@
+<section class="page-width cart-page" data-cart-page data-section-id="{{ section.id }}">
+  {% render 'pancarte-title', title: section.settings.title, style: 'pancarte', tag: 'h1' %}
+  <div data-drawer-content>
+    {% render 'cart-contents', context: 'page' %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Panier",
+  "tag": "div",
+  "class": "section-main-cart",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "Ton panier" }
+  ]
+}
+{% endschema %}

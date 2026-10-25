@@ -1,0 +1,224 @@
+{%- comment -%}
+  Page collection : titre façon pancarte, filtres (couleur, taille, prix) et grille.
+  Les filtres viennent de Shopify (app gratuite « Search & Discovery »).
+{%- endcomment -%}
+{%- liquid
+  assign style = section.settings.title_style
+  assign coll_handle = collection.handle
+  case coll_handle
+    when 'pancartes'
+      assign style = 'pancarte'
+    when 'stickers'
+      assign style = 'sticker'
+    when 'murs'
+      assign style = 'mur'
+    when 'bitume'
+      assign style = 'bitume'
+  endcase
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+-%}
+
+<div class="collection collection--{{ style }}" data-collection-section data-section-id="{{ section.id }}">
+  <header class="collection__hero showcase showcase--{{ style }}">
+    <div class="page-width">
+      {% render 'pancarte-title', title: collection.title, style: style, tag: 'h1' %}
+      {%- if collection.description != blank -%}
+        <div class="rte collection__description">{{ collection.description }}</div>
+      {%- endif -%}
+    </div>
+  </header>
+
+  {%- paginate collection.products by section.settings.per_page -%}
+    <div class="page-width collection__body">
+      <form class="filters" action="{{ collection.url }}" method="get" data-filters-form>
+        <div class="filters__bar">
+          <p class="filters__count" role="status">
+            {{ collection.products_count }} t-shirt{% if collection.products_count > 1 %}s{% endif %}
+          </p>
+
+          {%- if section.settings.enable_filters and collection.filters.size > 0 -%}
+            <div class="filters__list">
+              {%- for filter in collection.filters -%}
+                <details class="filter" data-filter>
+                  <summary class="filter__summary">
+                    {{ filter.label | escape }}
+                    {%- if filter.active_values.size > 0 %} <span class="filter__badge">{{ filter.active_values.size }}</span>{% endif -%}
+                    {%- if filter.type == 'price_range' -%}
+                      {%- if filter.min_value.value or filter.max_value.value %} <span class="filter__badge">1</span>{% endif -%}
+                    {%- endif -%}
+                  </summary>
+                  <div class="filter__panel">
+                    {%- case filter.type -%}
+                      {%- when 'list', 'boolean' -%}
+                        <fieldset>
+                          <legend class="visually-hidden">{{ filter.label | escape }}</legend>
+                          <ul class="filter__values" role="list">
+                            {%- for value in filter.values -%}
+                              {%- assign filter_label = filter.label | downcase -%}
+                              <li>
+                                <label class="filter__option{% if value.count == 0 and value.active == false %} is-disabled{% endif %}">
+                                  <input
+                                    type="checkbox"
+                                    name="{{ value.param_name }}"
+                                    value="{{ value.value }}"
+                                    {% if value.active %}checked{% endif %}
+                                    {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                                  >
+                                  {%- if filter_label == 'couleur' or filter_label == 'color' -%}
+                                    <span class="swatch swatch--small" style="--swatch: {% render 'color-value', value: value.label %};" aria-hidden="true"></span>
+                                  {%- endif -%}
+                                  <span>{{ value.label | escape }}</span>
+                                  <span class="filter__n">({{ value.count }})</span>
+                                </label>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        </fieldset>
+                      {%- when 'price_range' -%}
+                        <div class="filter__price">
+                          <label>
+                            <span>De</span>
+                            <input
+                              class="input"
+                              type="number"
+                              name="{{ filter.min_value.param_name }}"
+                              {% if filter.min_value.value %}value="{{ filter.min_value.value | money_without_currency | replace: ',', '.' }}"{% endif %}
+                              placeholder="0"
+                              min="0"
+                              max="{{ filter.range_max | money_without_currency | replace: ',', '.' }}"
+                              step="1"
+                            >
+                          </label>
+                          <label>
+                            <span>à</span>
+                            <input
+                              class="input"
+                              type="number"
+                              name="{{ filter.max_value.param_name }}"
+                              {% if filter.max_value.value %}value="{{ filter.max_value.value | money_without_currency | replace: ',', '.' }}"{% endif %}
+                              placeholder="{{ filter.range_max | money_without_currency | replace: ',', '.' }}"
+                              min="0"
+                              max="{{ filter.range_max | money_without_currency | replace: ',', '.' }}"
+                              step="1"
+                            >
+                          </label>
+                          <span>{{ cart.currency.symbol }}</span>
+                        </div>
+                    {%- endcase -%}
+                  </div>
+                </details>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.enable_sorting -%}
+            <label class="filters__sort">
+              <span>Trier</span>
+              <select name="sort_by" class="input" data-auto-submit>
+                {%- for option in collection.sort_options -%}
+                  <option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected="selected"{% endif %}>
+                    {{ option.name | escape }}
+                  </option>
+                {%- endfor -%}
+              </select>
+            </label>
+          {%- endif -%}
+
+          <noscript><button type="submit" class="sticker-btn sticker-btn--small">Filtrer</button></noscript>
+        </div>
+
+        {%- liquid
+          assign has_active = false
+          for filter in collection.filters
+            if filter.active_values.size > 0 or filter.min_value.value or filter.max_value.value
+              assign has_active = true
+            endif
+          endfor
+        -%}
+        {%- if has_active -%}
+          <ul class="filters__active" role="list">
+            {%- for filter in collection.filters -%}
+              {%- for value in filter.active_values -%}
+                <li>
+                  <a class="chip" href="{{ value.url_to_remove }}">
+                    {{ value.label | escape }} <span aria-hidden="true">×</span><span class="visually-hidden">Retirer le filtre</span>
+                  </a>
+                </li>
+              {%- endfor -%}
+              {%- if filter.type == 'price_range' -%}
+                {%- if filter.min_value.value or filter.max_value.value -%}
+                  <li>
+                    <a class="chip" href="{{ filter.url_to_remove }}">
+                      {{ filter.min_value.value | default: 0 | money }} – {{ filter.max_value.value | default: filter.range_max | money }}
+                      <span aria-hidden="true">×</span><span class="visually-hidden">Retirer le filtre</span>
+                    </a>
+                  </li>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+            <li><a class="chip chip--clear" href="{{ collection.url }}?sort_by={{ sort_by }}">Tout effacer</a></li>
+          </ul>
+        {%- endif -%}
+      </form>
+
+      {%- if collection.products.size > 0 -%}
+        <div class="grid grid--products grid--cols-{{ section.settings.columns_desktop }}" id="ProductGrid">
+          {%- for product in collection.products -%}
+            {% render 'product-card', product: product, index: forloop.index0 %}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div class="empty-state">
+          <p class="empty-state__title">Rien ici… pour l'instant.</p>
+          <p>Aucun t-shirt ne correspond à ces filtres. Même nous, on n'a pas tous les slogans.</p>
+          <a href="{{ collection.url }}" class="sticker-btn">Effacer les filtres</a>
+        </div>
+      {%- endif -%}
+
+      {% render 'pagination', paginate: paginate %}
+    </div>
+  {%- endpaginate -%}
+</div>
+
+{% schema %}
+{
+  "name": "Collection",
+  "tag": "section",
+  "class": "section-main-collection",
+  "settings": [
+    {
+      "type": "select",
+      "id": "title_style",
+      "label": "Style du titre par défaut",
+      "info": "Les collections pancartes, stickers, murs et bitume ont automatiquement leur ambiance.",
+      "options": [
+        { "value": "pancarte", "label": "Pancarte en carton" },
+        { "value": "sticker", "label": "Sticker" },
+        { "value": "mur", "label": "Tag sur un mur" },
+        { "value": "bitume", "label": "Affiche de propagande" }
+      ],
+      "default": "pancarte"
+    },
+    {
+      "type": "range",
+      "id": "per_page",
+      "label": "Produits par page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Colonnes sur ordinateur",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    { "type": "checkbox", "id": "enable_filters", "label": "Filtres", "default": true },
+    { "type": "checkbox", "id": "enable_sorting", "label": "Tri", "default": true }
+  ]
+}
+{% endschema %}

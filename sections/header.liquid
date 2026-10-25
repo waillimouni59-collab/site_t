@@ -1,0 +1,141 @@
+{%- liquid
+  assign menu = section.settings.menu
+  if settings.cart_type == 'drawer'
+    assign cart_attr = 'data-cart-open'
+  endif
+-%}
+
+<header class="header{% if section.settings.sticky %} header--sticky{% endif %}" data-header>
+  <div class="header__inner page-width">
+    <div class="header__left">
+      <details class="menu-drawer" data-menu-drawer>
+        <summary class="icon-btn menu-drawer__toggle" aria-label="{{ 'accessibility.open_menu' | t }}">
+          {% render 'icon', name: 'menu' %}
+        </summary>
+        <div class="menu-drawer__panel">
+          <nav aria-label="Menu principal (mobile)">
+            <ul class="menu-drawer__list" role="list">
+              {%- render 'header-menu-links', menu: menu -%}
+            </ul>
+          </nav>
+          {%- if shop.customer_accounts_enabled -%}
+            <a class="menu-drawer__account" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}">
+              {% render 'icon', name: 'account' %}
+              {% if customer %}Mon compte{% else %}Se connecter{% endif %}
+            </a>
+          {%- endif -%}
+        </div>
+      </details>
+
+      <nav class="header__nav" aria-label="Menu principal">
+        <ul class="header__menu" role="list">
+          {%- render 'header-menu-links', menu: menu -%}
+        </ul>
+      </nav>
+    </div>
+
+    <div class="header__logo">
+      {%- if request.page_type == 'index' -%}<h1 class="header__logo-wrap">{%- else -%}<div class="header__logo-wrap">{%- endif -%}
+        <a href="{{ routes.root_url }}" class="header__logo-link">
+          {%- if section.settings.logo != blank -%}
+            {%- assign logo_alt = section.settings.logo.alt | default: shop.name -%}
+            {%- assign logo_style = 'max-width: ' | append: section.settings.logo_width | append: 'px' -%}
+            {{
+              section.settings.logo
+              | image_url: width: 600
+              | image_tag:
+                class: 'header__logo-img',
+                widths: '160, 240, 320, 480, 600',
+                sizes: '(min-width: 750px) 200px, 140px',
+                alt: logo_alt,
+                style: logo_style
+            }}
+          {%- else -%}
+            <span class="header__logo-text">{{ shop.name }}</span>
+          {%- endif -%}
+        </a>
+      {%- if request.page_type == 'index' -%}</h1>{%- else -%}</div>{%- endif -%}
+    </div>
+
+    <div class="header__icons">
+      <details class="header-search" data-header-search>
+        <summary class="icon-btn" aria-label="{{ 'accessibility.search' | t }}">
+          {% render 'icon', name: 'search' %}
+        </summary>
+        <div class="header-search__panel">
+          <form action="{{ routes.search_url }}" method="get" role="search" class="header-search__form">
+            <label class="visually-hidden" for="HeaderSearch-{{ section.id }}">{{ 'accessibility.search' | t }}</label>
+            <input
+              id="HeaderSearch-{{ section.id }}"
+              class="input"
+              type="search"
+              name="q"
+              value="{{ search.terms | escape }}"
+              placeholder="Un slogan, une couleur…"
+              autocomplete="off"
+            >
+            <input type="hidden" name="options[prefix]" value="last">
+            <button type="submit" class="sticker-btn sticker-btn--small">Chercher</button>
+          </form>
+        </div>
+      </details>
+
+      {%- if shop.customer_accounts_enabled -%}
+        <a
+          class="icon-btn header__account"
+          href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
+          aria-label="{{ 'accessibility.account' | t }}"
+        >
+          {% render 'icon', name: 'account' %}
+        </a>
+      {%- endif -%}
+
+      <a class="icon-btn header__cart" href="{{ routes.cart_url }}" {{ cart_attr }} aria-label="{{ 'accessibility.cart' | t }}">
+        {% render 'icon', name: 'cart' %}
+        <span class="cart-bubble{% if cart.item_count == 0 %} is-empty{% endif %}" data-cart-count>
+          <span aria-hidden="true">{{ cart.item_count }}</span>
+          <span class="visually-hidden">{{ 'accessibility.cart_count' | t: count: cart.item_count }}</span>
+        </span>
+      </a>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu",
+      "info": "Conseillé : Accueil, Collections, Tous les t-shirts, Le manifeste. Si le menu est vide, ces liens sont affichés par défaut."
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo",
+      "info": "Sans logo, le nom de la boutique est écrit au marqueur."
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Largeur du logo",
+      "min": 60,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "default": 160
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "Header fixe au scroll",
+      "default": true
+    }
+  ],
+  "enabled_on": { "groups": ["header"] }
+}
+{% endschema %}

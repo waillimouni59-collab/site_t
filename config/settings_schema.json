@@ -1,0 +1,150 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Porte tes idées",
+    "theme_version": "1.0.0",
+    "theme_author": "waillimouni59-collab",
+    "theme_documentation_url": "https://github.com/waillimouni59-collab/site_t",
+    "theme_support_url": "https://github.com/waillimouni59-collab/site_t/issues"
+  },
+  {
+    "name": "Couleurs",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Palette de la rue : papier blanc cassé, encre noire, rouge manif et les touches de couleur des designs."
+      },
+      { "type": "color", "id": "color_paper", "label": "Fond (blanc cassé)", "default": "#F4F0E6" },
+      { "type": "color", "id": "color_ink", "label": "Texte (noir profond)", "default": "#111111" },
+      { "type": "color", "id": "color_red", "label": "Accent (rouge vif)", "default": "#D11A1F" },
+      { "type": "color", "id": "color_yellow", "label": "Jaune", "default": "#FFD400" },
+      { "type": "color", "id": "color_pink", "label": "Rose", "default": "#FF8FC7" },
+      { "type": "color", "id": "color_sky", "label": "Bleu ciel", "default": "#8FD3FF" },
+      { "type": "color", "id": "color_kraft", "label": "Carton kraft", "default": "#C9A46A" }
+    ]
+  },
+  {
+    "name": "Mise en page",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "label": "Largeur maximale de la page",
+        "min": 1000,
+        "max": 1600,
+        "step": 20,
+        "unit": "px",
+        "default": 1400
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_tilt",
+        "label": "Rotations « fait main » (-2° à 2°)",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_animations",
+        "label": "Animations au scroll",
+        "info": "Désactivées automatiquement si le visiteur a demandé moins d'animations.",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "32 × 32 px, PNG"
+      }
+    ]
+  },
+  {
+    "name": "Panier",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Type de panier",
+        "options": [
+          { "value": "drawer", "label": "Tiroir latéral" },
+          { "value": "page", "label": "Page panier" }
+        ],
+        "default": "drawer"
+      },
+      {
+        "type": "range",
+        "id": "free_shipping_threshold",
+        "label": "Seuil de livraison offerte",
+        "info": "Sert à calculer la barre de progression. Pense à créer le tarif d'expédition gratuit correspondant dans Paramètres > Expédition.",
+        "min": 0,
+        "max": 200,
+        "step": 5,
+        "unit": "€",
+        "default": 60
+      },
+      {
+        "type": "text",
+        "id": "cart_note_offer",
+        "label": "Message promo dans le panier",
+        "default": "3 t-shirts achetés = le 4e offert"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_note",
+        "label": "Afficher la note de commande",
+        "default": false
+      }
+    ]
+  },
+  {
+    "name": "Produits",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "card_show_back",
+        "label": "Afficher le dos du t-shirt au survol",
+        "info": "Utilise la 2e image du produit.",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "card_ratio",
+        "label": "Format des images produits",
+        "options": [
+          { "value": "1 / 1", "label": "Carré" },
+          { "value": "4 / 5", "label": "Portrait" },
+          { "value": "4 / 3", "label": "Paysage" }
+        ],
+        "default": "1 / 1"
+      },
+      {
+        "type": "select",
+        "id": "card_fit",
+        "label": "Cadrage des images produits",
+        "options": [
+          { "value": "contain", "label": "Image entière" },
+          { "value": "cover", "label": "Remplir le cadre" }
+        ],
+        "default": "contain"
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_swatches",
+        "label": "Afficher les pastilles de couleur",
+        "default": true
+      },
+      {
+        "type": "page",
+        "id": "size_guide_page",
+        "label": "Page « Guide des tailles »",
+        "info": "Facultatif. Sinon un tableau standard XS à XXL est affiché."
+      }
+    ]
+  },
+  {
+    "name": "Réseaux sociaux",
+    "settings": [
+      { "type": "text", "id": "social_instagram", "label": "Instagram", "info": "https://instagram.com/…" },
+      { "type": "text", "id": "social_tiktok", "label": "TikTok", "info": "https://tiktok.com/@…" }
+    ]
+  }
+]

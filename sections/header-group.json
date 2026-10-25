@@ -1,0 +1,28 @@
+{
+  "type": "header",
+  "name": "Haut de page",
+  "sections": {
+    "announcement": {
+      "type": "announcement-bar",
+      "blocks": {
+        "msg1": { "type": "message", "settings": { "text": "Livraison offerte dès 60 €" } },
+        "msg2": { "type": "message", "settings": { "text": "3 t-shirts achetés = le 4e offert" } },
+        "msg3": { "type": "message", "settings": { "text": "Porte tes idées" } }
+      },
+      "block_order": ["msg1", "msg2", "msg3"],
+      "settings": {
+        "background": "red",
+        "speed": 30
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "menu": "main-menu",
+        "logo_width": 160,
+        "sticky": true
+      }
+    }
+  },
+  "order": ["announcement", "header"]
+}

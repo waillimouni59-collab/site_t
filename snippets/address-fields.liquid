@@ -1,0 +1,22 @@
+{%- comment -%}
+  Champs d'adresse pour les formulaires customer_address.
+  Accepte :
+  - form : {Object}
+  - id : {String|Number} suffixe unique des identifiants
+{%- endcomment -%}
+{{ form.errors | default_errors }}
+<div class="field"><label for="AddrFirst-{{ id }}">Prénom</label><input class="input" id="AddrFirst-{{ id }}" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name"></div>
+<div class="field"><label for="AddrLast-{{ id }}">Nom</label><input class="input" id="AddrLast-{{ id }}" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name"></div>
+<div class="field"><label for="AddrCompany-{{ id }}">Société</label><input class="input" id="AddrCompany-{{ id }}" name="address[company]" value="{{ form.company }}" autocomplete="organization"></div>
+<div class="field"><label for="AddrAddress1-{{ id }}">Adresse</label><input class="input" id="AddrAddress1-{{ id }}" name="address[address1]" value="{{ form.address1 }}" autocomplete="address-line1"></div>
+<div class="field"><label for="AddrAddress2-{{ id }}">Complément</label><input class="input" id="AddrAddress2-{{ id }}" name="address[address2]" value="{{ form.address2 }}" autocomplete="address-line2"></div>
+<div class="field"><label for="AddrZip-{{ id }}">Code postal</label><input class="input" id="AddrZip-{{ id }}" name="address[zip]" value="{{ form.zip }}" autocomplete="postal-code"></div>
+<div class="field"><label for="AddrCity-{{ id }}">Ville</label><input class="input" id="AddrCity-{{ id }}" name="address[city]" value="{{ form.city }}" autocomplete="address-level2"></div>
+<div class="field">
+  <label for="AddrCountry-{{ id }}">Pays</label>
+  <select class="input" id="AddrCountry-{{ id }}" name="address[country]" autocomplete="country">
+    {{ all_country_option_tags }}
+  </select>
+</div>
+<div class="field"><label for="AddrPhone-{{ id }}">Téléphone</label><input class="input" type="tel" id="AddrPhone-{{ id }}" name="address[phone]" value="{{ form.phone }}" autocomplete="tel"></div>
+<label class="field field--check">{{ form.set_as_default_checkbox }} Adresse par défaut</label>
