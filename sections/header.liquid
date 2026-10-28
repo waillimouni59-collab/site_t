@@ -3,50 +3,54 @@
   if settings.cart_type == 'drawer'
     assign cart_attr = 'data-cart-open'
   endif
+  if customer
+    assign account_url = routes.account_url
+  else
+    assign account_url = routes.account_login_url
+  endif
 -%}
 
 <header class="header{% if section.settings.sticky %} header--sticky{% endif %}" data-header>
   <div class="header__inner page-width">
-    <div class="header__left">
-      <details class="menu-drawer" data-menu-drawer>
-        <summary class="icon-btn menu-drawer__toggle" aria-label="{{ 'accessibility.open_menu' | t }}">
-          {% render 'icon', name: 'menu' %}
-        </summary>
-        <div class="menu-drawer__panel">
-          <nav aria-label="Menu principal (mobile)">
-            <ul class="menu-drawer__list" role="list">
-              {%- render 'header-menu-links', menu: menu -%}
-            </ul>
-          </nav>
+    <details class="menu-drawer" data-menu-drawer>
+      <summary class="icon-btn menu-drawer__toggle" aria-label="{{ 'accessibility.open_menu' | t }}">
+        {% render 'icon', name: 'menu' %}
+      </summary>
+      <div class="menu-drawer__panel">
+        <nav aria-label="Menu principal (mobile)">
+          <ul class="menu-drawer__list" role="list">
+            {%- render 'header-menu-links', menu: menu -%}
+          </ul>
+        </nav>
+        <div class="menu-drawer__footer">
           {%- if shop.customer_accounts_enabled -%}
-            <a class="menu-drawer__account" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}">
+            <a class="menu-drawer__account" href="{{ account_url }}">
               {% render 'icon', name: 'account' %}
               {% if customer %}Mon compte{% else %}Se connecter{% endif %}
             </a>
           {%- endif -%}
+          {%- if section.settings.show_localization -%}
+            {% render 'localization-form', id: 'MenuLocalization' %}
+          {%- endif -%}
         </div>
-      </details>
-
-      <nav class="header__nav" aria-label="Menu principal">
-        <ul class="header__menu" role="list">
-          {%- render 'header-menu-links', menu: menu -%}
-        </ul>
-      </nav>
-    </div>
+      </div>
+    </details>
 
     <div class="header__logo">
       {%- if request.page_type == 'index' -%}<h1 class="header__logo-wrap">{%- else -%}<div class="header__logo-wrap">{%- endif -%}
         <a href="{{ routes.root_url }}" class="header__logo-link">
           {%- if section.settings.logo != blank -%}
-            {%- assign logo_alt = section.settings.logo.alt | default: shop.name -%}
-            {%- assign logo_style = 'max-width: ' | append: section.settings.logo_width | append: 'px' -%}
+            {%- liquid
+              assign logo_alt = section.settings.logo.alt | default: shop.name
+              assign logo_style = 'width: ' | append: section.settings.logo_width | append: 'px'
+            -%}
             {{
               section.settings.logo
               | image_url: width: 600
               | image_tag:
                 class: 'header__logo-img',
                 widths: '160, 240, 320, 480, 600',
-                sizes: '(min-width: 750px) 200px, 140px',
+                sizes: '(min-width: 990px) 240px, 160px',
                 alt: logo_alt,
                 style: logo_style
             }}
@@ -57,38 +61,47 @@
       {%- if request.page_type == 'index' -%}</h1>{%- else -%}</div>{%- endif -%}
     </div>
 
+    <nav class="header__nav" aria-label="Menu principal">
+      <ul class="header__menu" role="list">
+        {%- render 'header-menu-links', menu: menu -%}
+      </ul>
+    </nav>
+
     <div class="header__icons">
+      {%- if section.settings.show_localization -%}
+        <div class="header__localization">
+          {% render 'localization-form', id: 'HeaderLocalization' %}
+        </div>
+      {%- endif -%}
+
+      {%- if shop.customer_accounts_enabled -%}
+        <a class="icon-btn header__account" href="{{ account_url }}" aria-label="{{ 'accessibility.account' | t }}">
+          {% render 'icon', name: 'account' %}
+        </a>
+      {%- endif -%}
+
       <details class="header-search" data-header-search>
         <summary class="icon-btn" aria-label="{{ 'accessibility.search' | t }}">
           {% render 'icon', name: 'search' %}
         </summary>
         <div class="header-search__panel">
-          <form action="{{ routes.search_url }}" method="get" role="search" class="header-search__form">
+          <form action="{{ routes.search_url }}" method="get" role="search" class="header-search__form page-width">
             <label class="visually-hidden" for="HeaderSearch-{{ section.id }}">{{ 'accessibility.search' | t }}</label>
+            {% render 'icon', name: 'search' %}
             <input
               id="HeaderSearch-{{ section.id }}"
-              class="input"
+              class="header-search__input"
               type="search"
               name="q"
               value="{{ search.terms | escape }}"
-              placeholder="Un slogan, une couleur…"
+              placeholder="Rechercher un article"
               autocomplete="off"
             >
             <input type="hidden" name="options[prefix]" value="last">
-            <button type="submit" class="sticker-btn sticker-btn--small">Chercher</button>
+            <button type="submit" class="button button--small">Rechercher</button>
           </form>
         </div>
       </details>
-
-      {%- if shop.customer_accounts_enabled -%}
-        <a
-          class="icon-btn header__account"
-          href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
-          aria-label="{{ 'accessibility.account' | t }}"
-        >
-          {% render 'icon', name: 'account' %}
-        </a>
-      {%- endif -%}
 
       <a class="icon-btn header__cart" href="{{ routes.cart_url }}" {{ cart_attr }} aria-label="{{ 'accessibility.cart' | t }}">
         {% render 'icon', name: 'cart' %}
@@ -111,23 +124,30 @@
       "id": "menu",
       "label": "Menu",
       "default": "main-menu",
-      "info": "Conseillé : Accueil, Collections, Tous les t-shirts, Le manifeste. Si le menu est vide, ces liens sont affichés par défaut."
+      "info": "Si le menu est vide : Accueil, T-shirts, Hoodies, Tous les articles."
     },
     {
       "type": "image_picker",
       "id": "logo",
       "label": "Logo",
-      "info": "Sans logo, le nom de la boutique est écrit au marqueur."
+      "info": "Sans logo, le nom de la boutique est affiché."
     },
     {
       "type": "range",
       "id": "logo_width",
       "label": "Largeur du logo",
       "min": 60,
-      "max": 300,
+      "max": 320,
       "step": 10,
       "unit": "px",
-      "default": 160
+      "default": 180
+    },
+    {
+      "type": "checkbox",
+      "id": "show_localization",
+      "label": "Sélecteur de devise",
+      "info": "Visible si plusieurs pays sont activés dans Paramètres > Marchés.",
+      "default": true
     },
     {
       "type": "checkbox",

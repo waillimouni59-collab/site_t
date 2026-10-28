@@ -5,22 +5,20 @@
     "announcement": {
       "type": "announcement-bar",
       "blocks": {
-        "msg1": { "type": "message", "settings": { "text": "Livraison offerte dès 60 €" } },
-        "msg2": { "type": "message", "settings": { "text": "3 t-shirts achetés = le 4e offert" } },
-        "msg3": { "type": "message", "settings": { "text": "Porte tes idées" } }
+        "msg1": { "type": "message", "settings": { "text": "Livraison offerte en France dès 60 €" } }
       },
-      "block_order": ["msg1", "msg2", "msg3"],
+      "block_order": ["msg1"],
       "settings": {
-        "background": "red",
-        "speed": 30
+        "autoplay_speed": 5
       }
     },
     "header": {
       "type": "header",
       "settings": {
         "menu": "main-menu",
-        "logo_width": 160,
-        "sticky": true
+        "logo_width": 180,
+        "sticky": true,
+        "show_localization": true
       }
     }
   },

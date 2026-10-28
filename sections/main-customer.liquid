@@ -3,25 +3,23 @@
   mot de passe, compte, commande, adresses. Une seule section pour toutes.
 {%- endcomment -%}
 <section class="page-width customer">
-  <div class="customer__paper">
-    <span class="tape tape--tl"></span>
-    <span class="tape tape--tr"></span>
+  <div class="narrow">
 
     {%- case request.page_type -%}
       {%- when 'customers/login' -%}
-        {% render 'pancarte-title', title: 'Connexion', tag: 'h1' %}
+        <h1 class="page-title">{{ 'Connexion' | escape }}</h1>
         <div id="RecoverPassword" class="customer__recover">
           <h2 class="customer__subtitle">Mot de passe oublié ?</h2>
           {%- form 'recover_customer_password' -%}
             {%- if form.posted_successfully? -%}
-              <p class="form-message form-message--success" role="status">On t'a envoyé un e-mail pour le réinitialiser.</p>
+              <p class="form-message form-message--success" role="status">Un e-mail de réinitialisation vous a été envoyé.</p>
             {%- endif -%}
             {{ form.errors | default_errors }}
             <div class="field">
               <label for="RecoverEmail">E-mail</label>
               <input class="input" type="email" id="RecoverEmail" name="email" autocomplete="email" required>
             </div>
-            <button type="submit" class="sticker-btn">Réinitialiser</button>
+            <button type="submit" class="button button--outline">Réinitialiser</button>
             <a href="#Login" class="link-btn">Annuler</a>
           {%- endform -%}
         </div>
@@ -40,9 +38,9 @@
               </div>
               <p><a href="#RecoverPassword" class="link-btn">Mot de passe oublié ?</a></p>
             {%- endif -%}
-            <button type="submit" class="sticker-btn sticker-btn--red">Se connecter</button>
+            <button type="submit" class="button">Se connecter</button>
           {%- endform -%}
-          <p class="customer__alt">Pas encore de compte ? <a href="{{ routes.account_register_url }}">Crée-le ici</a>.</p>
+          <p class="customer__alt">Pas encore de compte ? <a href="{{ routes.account_register_url }}">Créer un compte</a></p>
           {%- if shop.checkout.guest_login -%}
             {%- form 'guest_login' -%}
               <button type="submit" class="link-btn">Continuer en invité</button>
@@ -51,38 +49,38 @@
         </div>
 
       {%- when 'customers/register' -%}
-        {% render 'pancarte-title', title: 'Créer un compte', tag: 'h1' %}
+        <h1 class="page-title">{{ 'Créer un compte' | escape }}</h1>
         {%- form 'create_customer', novalidate: 'novalidate' -%}
           {{ form.errors | default_errors }}
           <div class="field"><label for="RegFirst">Prénom</label><input class="input" type="text" id="RegFirst" name="customer[first_name]" autocomplete="given-name"></div>
           <div class="field"><label for="RegLast">Nom</label><input class="input" type="text" id="RegLast" name="customer[last_name]" autocomplete="family-name"></div>
           <div class="field"><label for="RegEmail">E-mail</label><input class="input" type="email" id="RegEmail" name="customer[email]" autocomplete="email" required></div>
           <div class="field"><label for="RegPassword">Mot de passe</label><input class="input" type="password" id="RegPassword" name="customer[password]" autocomplete="new-password" required></div>
-          <button type="submit" class="sticker-btn sticker-btn--red">Créer mon compte</button>
+          <button type="submit" class="button">Créer mon compte</button>
         {%- endform -%}
 
       {%- when 'customers/activate_account' -%}
-        {% render 'pancarte-title', title: 'Active ton compte', tag: 'h1' %}
+        <h1 class="page-title">{{ 'Activer votre compte' | escape }}</h1>
         {%- form 'activate_customer_password' -%}
           {{ form.errors | default_errors }}
           <div class="field"><label for="ActPassword">Mot de passe</label><input class="input" type="password" id="ActPassword" name="customer[password]" autocomplete="new-password" required></div>
           <div class="field"><label for="ActConfirm">Confirme le mot de passe</label><input class="input" type="password" id="ActConfirm" name="customer[password_confirmation]" autocomplete="new-password" required></div>
-          <button type="submit" class="sticker-btn sticker-btn--red">Activer</button>
+          <button type="submit" class="button">Activer</button>
           <button type="submit" name="decline" class="link-btn">Refuser l'invitation</button>
         {%- endform -%}
 
       {%- when 'customers/reset_password' -%}
-        {% render 'pancarte-title', title: 'Nouveau mot de passe', tag: 'h1' %}
+        <h1 class="page-title">{{ 'Nouveau mot de passe' | escape }}</h1>
         {%- form 'reset_customer_password' -%}
           {{ form.errors | default_errors }}
           <div class="field"><label for="ResetPassword">Mot de passe</label><input class="input" type="password" id="ResetPassword" name="customer[password]" autocomplete="new-password" required></div>
           <div class="field"><label for="ResetConfirm">Confirme le mot de passe</label><input class="input" type="password" id="ResetConfirm" name="customer[password_confirmation]" autocomplete="new-password" required></div>
-          <button type="submit" class="sticker-btn sticker-btn--red">Valider</button>
+          <button type="submit" class="button">Valider</button>
         {%- endform -%}
 
       {%- when 'customers/account' -%}
-        {% render 'pancarte-title', title: 'Mon compte', tag: 'h1' %}
-        <p>Salut {{ customer.first_name | default: customer.email | escape }} ! <a href="{{ routes.account_logout_url }}" class="link-btn">Se déconnecter</a></p>
+        <h1 class="page-title">{{ 'Mon compte' | escape }}</h1>
+        <p>Bonjour {{ customer.first_name | default: customer.email | escape }}. <a href="{{ routes.account_logout_url }}" class="link-btn">Se déconnecter</a></p>
         <h2 class="customer__subtitle">Mes commandes</h2>
         {%- paginate customer.orders by 20 -%}
           {%- if customer.orders.size > 0 -%}
@@ -103,7 +101,7 @@
               </table>
             </div>
           {%- else -%}
-            <p>Pas encore de commande. Ton dos attend son premier message.</p>
+            <p>Vous n'avez pas encore passé de commande.</p>
           {%- endif -%}
           {% render 'pagination', paginate: paginate %}
         {%- endpaginate -%}
@@ -114,7 +112,7 @@
         <p><a href="{{ routes.account_addresses_url }}" class="link-btn">Gérer mes adresses ({{ customer.addresses_count }})</a></p>
 
       {%- when 'customers/order' -%}
-        {% render 'pancarte-title', title: order.name, tag: 'h1' %}
+        <h1 class="page-title">{{ order.name | escape }}</h1>
         <p><a href="{{ routes.account_url }}" class="link-btn">← Retour au compte</a></p>
         <p>Passée le {{ order.created_at | time_tag: format: 'date' }}{% if order.cancelled %} — annulée ({{ order.cancel_reason_label }}){% endif %}</p>
         <div class="table-wrap">
@@ -145,18 +143,18 @@
         {%- endif -%}
 
       {%- when 'customers/addresses' -%}
-        {% render 'pancarte-title', title: 'Mes adresses', tag: 'h1' %}
+        <h1 class="page-title">{{ 'Mes adresses' | escape }}</h1>
         <p><a href="{{ routes.account_url }}" class="link-btn">← Retour au compte</a></p>
         {%- paginate customer.addresses by 10 -%}
           {%- for address in customer.addresses -%}
             <div class="customer__address">
               <address>{{ address | format_address }}</address>
-              {%- if address == customer.default_address %}<p class="tape-label">Par défaut</p>{% endif -%}
+              {%- if address == customer.default_address %}<p class="badge badge--static">Par défaut</p>{% endif -%}
               <details>
                 <summary class="link-btn">Modifier</summary>
                 {%- form 'customer_address', address -%}
                   {% render 'address-fields', form: form, id: address.id %}
-                  <button type="submit" class="sticker-btn">Enregistrer</button>
+                  <button type="submit" class="button button--outline">Enregistrer</button>
                 {%- endform -%}
               </details>
               <form method="post" action="{{ routes.account_addresses_url }}/{{ address.id }}">
@@ -168,10 +166,10 @@
           {% render 'pagination', paginate: paginate %}
         {%- endpaginate -%}
         <details class="customer__new-address">
-          <summary class="sticker-btn">Ajouter une adresse</summary>
+          <summary class="button button--outline">Ajouter une adresse</summary>
           {%- form 'customer_address', customer.new_address -%}
             {% render 'address-fields', form: form, id: 'new' %}
-            <button type="submit" class="sticker-btn sticker-btn--red">Ajouter</button>
+            <button type="submit" class="button">Ajouter</button>
           {%- endform -%}
         </details>
     {%- endcase -%}

@@ -1,5 +1,5 @@
 {%- comment -%}
-  Prix en police monospace.
+  Prix (avec le code devise si activé dans Paramètres du thème > Prix).
   Accepte :
   - product : {Object}
   - variant : {Object} (facultatif, sinon variante sélectionnée ou première disponible)
@@ -14,15 +14,22 @@
     assign varies = true
     assign price = product.price_min
   endif
+  if settings.currency_code_enabled
+    assign price_html = price | money_with_currency
+    assign compare_html = compare | money_with_currency
+  else
+    assign price_html = price | money
+    assign compare_html = compare | money
+  endif
 -%}
 <p class="price{% if compare > price %} price--sale{% endif %}{% if class %} {{ class }}{% endif %}" data-price>
   {%- if compare > price -%}
     <span class="visually-hidden">Prix normal</span>
-    <s class="price__compare">{{ compare | money }}</s>
+    <s class="price__compare">{{ compare_html }}</s>
     <span class="visually-hidden">Prix promo</span>
   {%- endif -%}
   <span class="price__current">
     {%- if varies %}Dès {% endif -%}
-    {{- price | money -}}
+    {{- price_html -}}
   </span>
 </p>

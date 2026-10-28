@@ -15,26 +15,28 @@
       "zero": "Panier vide",
       "one": "{{ count }} article dans le panier",
       "other": "{{ count }} articles dans le panier"
-    }
+    },
+    "country": "Pays / devise"
   },
   "products": {
     "product": {
       "add_to_cart": "Ajouter au panier",
       "sold_out": "Épuisé",
       "unavailable": "Indisponible",
-      "quantity": "Quantité"
+      "quantity": "Quantité",
+      "link_copied": "Lien copié"
     }
   },
   "cart": {
-    "title": "Ton panier",
-    "empty": "Ton panier est vide.",
-    "empty_cta": "Trouver mon slogan",
+    "title": "Panier",
+    "empty": "Votre panier est vide.",
+    "empty_cta": "Continuer les achats",
     "remove": "Retirer",
-    "subtotal": "Total",
+    "subtotal": "Sous-total",
     "update": "Mettre à jour",
-    "checkout": "Commander",
-    "error": "Oups, ça n'a pas marché. Réessaie dans un instant.",
-    "free_shipping_remaining_html": "Plus que <strong>{{ amount }}</strong> pour la livraison offerte.",
-    "free_shipping_reached": "Livraison offerte débloquée. Bien joué !"
+    "checkout": "Paiement",
+    "error": "Une erreur est survenue. Merci de réessayer.",
+    "free_shipping_remaining_html": "Plus que <strong>{{ amount }}</strong> pour profiter de la livraison offerte.",
+    "free_shipping_reached": "Vous profitez de la livraison offerte."
   }
 }

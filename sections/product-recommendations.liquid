@@ -1,5 +1,5 @@
 {%- comment -%}
-  « Tu aimeras aussi » : chargé via l'API de recommandations de Shopify.
+  « Vous aimerez aussi » : chargé via l'API de recommandations de Shopify.
 {%- endcomment -%}
 {%- assign heading_id = 'Heading-' | append: section.id -%}
 <section
@@ -9,10 +9,9 @@
   aria-labelledby="{{ heading_id }}"
 >
   {%- if recommendations.performed? and recommendations.products_count > 0 -%}
-    {% render 'rubalise', text: section.settings.tape_text %}
     <div class="page-width">
       <div class="section__head">
-        {% render 'pancarte-title', title: section.settings.title, style: 'pancarte', id: heading_id %}
+        <h2 id="{{ heading_id }}" class="section__title">{{ section.settings.title | escape }}</h2>
       </div>
       <div class="grid grid--products grid--cols-4">
         {%- for product in recommendations.products -%}
@@ -25,12 +24,11 @@
 
 {% schema %}
 {
-  "name": "Tu aimeras aussi",
+  "name": "Vous aimerez aussi",
   "tag": "div",
   "class": "section-recommendations",
   "settings": [
-    { "type": "text", "id": "title", "label": "Titre", "default": "Tu aimeras aussi" },
-    { "type": "text", "id": "tape_text", "label": "Texte de la rubalise", "default": "Porte tes idées" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Vous aimerez aussi" },
     {
       "type": "range",
       "id": "products_to_show",

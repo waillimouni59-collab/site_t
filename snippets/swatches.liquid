@@ -7,11 +7,12 @@
   {%- assign option_name = option.name | downcase -%}
   {%- if option_name == 'couleur' or option_name == 'color' or option_name == 'colour' or option_name == 'coloris' -%}
     <ul class="swatches" role="list" aria-label="Couleurs disponibles : {{ option.values | join: ', ' | escape }}">
-      {%- for value in option.values -%}
-        <li class="swatches__item">
-          <span class="swatch" style="--swatch: {% render 'color-value', value: value %};" title="{{ value | escape }}"></span>
-        </li>
+      {%- for value in option.values limit: 6 -%}
+        <li><span class="swatch" style="--swatch: {% render 'color-value', value: value %};" title="{{ value | escape }}"></span></li>
       {%- endfor -%}
+      {%- if option.values.size > 6 -%}
+        <li class="swatches__more" aria-hidden="true">+{{ option.values.size | minus: 6 }}</li>
+      {%- endif -%}
     </ul>
     {%- break -%}
   {%- endif -%}

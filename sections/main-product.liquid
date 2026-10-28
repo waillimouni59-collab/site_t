@@ -8,9 +8,7 @@
   class="product page-width"
   data-product-section
   data-section-id="{{ section.id }}"
-  data-product-url="{{ product.url }}"
 >
-  {%- comment -%} Galerie : dos, face, porté — dans l'ordre des médias du produit. {%- endcomment -%}
   <div class="product__gallery" data-gallery>
     <div class="gallery__main">
       {%- if product.media.size > 0 -%}
@@ -20,20 +18,22 @@
             data-media-id="{{ media.id }}"
             {% unless media.id == featured.id %}hidden{% endunless %}
           >
-            <span class="tape tape--tl"></span>
-            <span class="tape tape--tr"></span>
             {%- case media.media_type -%}
               {%- when 'image' -%}
-                {%- assign media_alt = media.alt | default: product.title -%}
-                {%- assign media_loading = 'lazy' -%}
-                {%- if media.id == featured.id -%}{%- assign media_loading = 'eager' -%}{%- endif -%}
+                {%- liquid
+                  assign media_alt = media.alt | default: product.title
+                  assign media_loading = 'lazy'
+                  if media.id == featured.id
+                    assign media_loading = 'eager'
+                  endif
+                -%}
                 {{
                   media
-                  | image_url: width: 1600
+                  | image_url: width: 1800
                   | image_tag:
                     class: 'gallery__img',
-                    widths: '500, 750, 1000, 1300, 1600',
-                    sizes: '(min-width: 990px) 55vw, 100vw',
+                    widths: '500, 750, 1000, 1400, 1800',
+                    sizes: '(min-width: 990px) 58vw, 100vw',
                     loading: media_loading,
                     alt: media_alt
                 }}
@@ -64,7 +64,7 @@
               aria-label="Voir l'image {{ forloop.index }} : {{ media.alt | default: product.title | escape }}"
               {% if media.id == featured.id %}aria-current="true"{% endif %}
             >
-              {{ media.preview_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: '' }}
+              {{ media.preview_image | image_url: width: 240 | image_tag: loading: 'lazy', alt: '' }}
             </button>
           </li>
         {%- endfor -%}
@@ -78,20 +78,6 @@
         {%- when '@app' -%}
           {% render block %}
 
-        {%- when 'kicker' -%}
-          {%- assign kicker_collection = nil -%}
-          {%- for c in product.collections -%}
-            {%- if c.handle != 'all' and c.handle != 'frontpage' -%}
-              {%- assign kicker_collection = c -%}
-              {%- break -%}
-            {%- endif -%}
-          {%- endfor -%}
-          {%- if kicker_collection != blank -%}
-            <p class="product__kicker" {{ block.shopify_attributes }}>
-              <a href="{{ kicker_collection.url }}" class="tape-label">Collection {{ kicker_collection.title | escape }}</a>
-            </p>
-          {%- endif -%}
-
         {%- when 'title' -%}
           <h1 class="product__title" {{ block.shopify_attributes }}>{{ product.title | escape }}</h1>
 
@@ -101,7 +87,7 @@
             {%- if cart.taxes_included or shop.shipping_policy.body != blank -%}
               <p class="product__tax">
                 {%- if cart.taxes_included %}TVA incluse.{% endif %}
-                {% if shop.shipping_policy.body != blank %}<a href="{{ shop.shipping_policy.url }}">Frais de livraison</a> calculés à la commande.{% endif -%}
+                {% if shop.shipping_policy.body != blank %}<a href="{{ shop.shipping_policy.url }}">Frais de livraison</a> calculés lors du paiement.{% endif -%}
               </p>
             {%- endif -%}
           </div>
@@ -110,17 +96,19 @@
           {%- unless product.has_only_default_variant -%}
             <div class="variant-picker" data-variant-picker {{ block.shopify_attributes }}>
               {%- for option in product.options_with_values -%}
-                {%- assign option_name = option.name | downcase -%}
-                {%- assign is_color = false -%}
-                {%- if option_name == 'couleur' or option_name == 'color' or option_name == 'colour' or option_name == 'coloris' -%}
-                  {%- assign is_color = true -%}
-                {%- endif -%}
+                {%- liquid
+                  assign option_name = option.name | downcase
+                  assign is_color = false
+                  if option_name == 'couleur' or option_name == 'color' or option_name == 'colour' or option_name == 'coloris'
+                    assign is_color = true
+                  endif
+                  assign option_index = forloop.index0
+                -%}
                 <fieldset class="variant-picker__group">
                   <legend class="variant-picker__legend">
-                    {{ option.name | escape }} : <span data-option-selected="{{ forloop.index0 }}">{{ option.selected_value | escape }}</span>
+                    {{ option.name | escape }} : <span data-option-selected="{{ option_index }}">{{ option.selected_value | escape }}</span>
                   </legend>
                   <div class="variant-picker__values{% if is_color %} variant-picker__values--color{% endif %}">
-                    {%- assign option_index = forloop.index0 -%}
                     {%- for value in option.values -%}
                       {%- assign input_id = section.id | append: '-' | append: option_index | append: '-' | append: forloop.index0 -%}
                       <input
@@ -134,7 +122,7 @@
                         {% if option.selected_value == value %}checked{% endif %}
                       >
                       {%- if is_color -%}
-                        <label for="Option-{{ input_id }}" class="variant-picker__swatch{% if value.available == false %} is-unavailable{% endif %}" style="--swatch: {% render 'color-value', value: value %};">
+                        <label for="Option-{{ input_id }}" class="variant-picker__swatch{% if value.available == false %} is-unavailable{% endif %}" style="--swatch: {% render 'color-value', value: value %};" title="{{ value | escape }}">
                           <span class="visually-hidden">{{ value | escape }}{% if value.available == false %} (épuisé){% endif %}</span>
                         </label>
                       {%- else -%}
@@ -173,30 +161,30 @@
                 </select>
               </label>
 
-              <div class="product-form__row">
+              {%- if block.settings.show_quantity -%}
                 <div class="qty">
                   <label class="visually-hidden" for="Quantity-{{ section.id }}">{{ 'products.product.quantity' | t }}</label>
                   <button type="button" class="qty__btn" data-qty-step="-1" aria-label="Diminuer la quantité">{% render 'icon', name: 'minus' %}</button>
                   <input id="Quantity-{{ section.id }}" class="qty__input" type="number" name="quantity" value="1" min="1" inputmode="numeric">
                   <button type="button" class="qty__btn" data-qty-step="1" aria-label="Augmenter la quantité">{% render 'icon', name: 'plus' %}</button>
                 </div>
+              {%- endif -%}
 
-                <button
-                  type="submit"
-                  name="add"
-                  class="sticker-btn sticker-btn--red sticker-btn--large product-form__submit"
-                  data-add-button
-                  {% unless current_variant.available %}disabled{% endunless %}
-                >
-                  <span data-add-label>
-                    {%- if current_variant.available -%}
-                      {{ 'products.product.add_to_cart' | t }}
-                    {%- else -%}
-                      {{ 'products.product.sold_out' | t }}
-                    {%- endif -%}
-                  </span>
-                </button>
-              </div>
+              <button
+                type="submit"
+                name="add"
+                class="button button--full product-form__submit"
+                data-add-button
+                {% unless current_variant.available %}disabled{% endunless %}
+              >
+                <span data-add-label>
+                  {%- if current_variant.available -%}
+                    {{ 'products.product.add_to_cart' | t }}
+                  {%- else -%}
+                    {{ 'products.product.sold_out' | t }}
+                  {%- endif -%}
+                </span>
+              </button>
 
               <p class="form-message form-message--error" role="alert" data-form-error hidden></p>
 
@@ -207,53 +195,6 @@
             <form id="{{ form_id }}-options" hidden></form>
           </div>
 
-        {%- when 'slogan_origin' -%}
-          {%- liquid
-            assign origin = product.metafields.custom.slogan_origin
-            assign origin_place = product.metafields.custom.slogan_lieu
-            assign origin_photo = product.metafields.custom.slogan_photo.value
-          -%}
-          {%- if origin != blank or request.design_mode -%}
-            <aside class="slogan-origin" aria-labelledby="SloganOrigin-{{ section.id }}" {{ block.shopify_attributes }}>
-              <span class="tape tape--tl"></span>
-              <span class="tape tape--br"></span>
-              <h2 id="SloganOrigin-{{ section.id }}" class="slogan-origin__title">{{ block.settings.title | escape }}</h2>
-              {%- if origin != blank -%}
-                <div class="slogan-origin__text">
-                  {%- if origin.type == 'rich_text_field' -%}
-                    {{ origin | metafield_tag }}
-                  {%- else -%}
-                    <p>{{ origin.value | escape | newline_to_br }}</p>
-                  {%- endif -%}
-                </div>
-                {%- if origin_place != blank -%}
-                  <p class="slogan-origin__place"><strong>Repéré à :</strong> {{ origin_place.value | escape }}</p>
-                {%- endif -%}
-                {%- if origin_photo != blank -%}
-                  <figure class="slogan-origin__photo">
-                    {{ origin_photo | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300, 450, 600', sizes: '(min-width: 990px) 300px, 60vw', alt: origin_photo.alt }}
-                  </figure>
-                {%- endif -%}
-              {%- else -%}
-                <p class="slogan-origin__text">Remplis le metafield <code>custom.slogan_origin</code> de ce produit pour raconter où le slogan a été trouvé.</p>
-              {%- endif -%}
-            </aside>
-          {%- endif -%}
-
-        {%- when 'collapsible' -%}
-          <details class="collapsible" {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
-            <summary class="collapsible__summary">
-              {{ block.settings.heading | escape }}
-              <span class="collapsible__icon" aria-hidden="true">{% render 'icon', name: 'plus' %}</span>
-            </summary>
-            <div class="collapsible__content rte">
-              {{ block.settings.content }}
-              {%- if block.settings.page != blank -%}
-                {{ block.settings.page.content }}
-              {%- endif -%}
-            </div>
-          </details>
-
         {%- when 'text' -%}
           <div class="rte product__text" {{ block.shopify_attributes }}>
             {%- if block.settings.use_description -%}
@@ -262,6 +203,23 @@
               {{ block.settings.text }}
             {%- endif -%}
           </div>
+
+        {%- when 'collapsible' -%}
+          <details class="collapsible" {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
+            <summary class="collapsible__summary">
+              {{ block.settings.heading | escape }}
+              <span class="collapsible__icon" aria-hidden="true">{% render 'icon', name: 'plus' %}</span>
+            </summary>
+            <div class="collapsible__content rte">
+              {%- if block.settings.use_description -%}
+                {{ product.description }}
+              {%- endif -%}
+              {{ block.settings.content }}
+              {%- if block.settings.page != blank -%}
+                {{ block.settings.page.content }}
+              {%- endif -%}
+            </div>
+          </details>
 
         {%- when 'share' -%}
           <p class="product__share" {{ block.shopify_attributes }}>
@@ -278,7 +236,6 @@
   </script>
 </section>
 
-{%- comment -%} Données structurées pour le référencement {%- endcomment -%}
 <script type="application/ld+json">
   {{ product | structured_data }}
 </script>
@@ -290,7 +247,6 @@
   "class": "section-main-product",
   "blocks": [
     { "type": "@app" },
-    { "type": "kicker", "name": "Collection (étiquette)", "limit": 1 },
     { "type": "title", "name": "Titre", "limit": 1 },
     { "type": "price", "name": "Prix", "limit": 1 },
     { "type": "variant_picker", "name": "Couleur et taille", "limit": 1 },
@@ -307,6 +263,7 @@
       "name": "Bouton d'achat",
       "limit": 1,
       "settings": [
+        { "type": "checkbox", "id": "show_quantity", "label": "Sélecteur de quantité", "default": false },
         {
           "type": "checkbox",
           "id": "show_dynamic_checkout",
@@ -314,28 +271,6 @@
           "info": "Shop Pay, Apple Pay, etc. selon les moyens de paiement activés.",
           "default": false
         }
-      ]
-    },
-    {
-      "type": "slogan_origin",
-      "name": "D'où vient ce slogan ?",
-      "limit": 1,
-      "settings": [
-        { "type": "text", "id": "title", "label": "Titre", "default": "D'où vient ce slogan ?" },
-        {
-          "type": "paragraph",
-          "content": "Le texte vient du metafield produit custom.slogan_origin (texte multiligne). Facultatif : custom.slogan_lieu (texte) et custom.slogan_photo (fichier image)."
-        }
-      ]
-    },
-    {
-      "type": "collapsible",
-      "name": "Onglet repliable",
-      "settings": [
-        { "type": "text", "id": "heading", "label": "Titre", "default": "Matière" },
-        { "type": "richtext", "id": "content", "label": "Contenu", "default": "<p>100 % coton bio, 180 g/m². Coupe droite, un poil oversize.</p>" },
-        { "type": "page", "id": "page", "label": "Contenu d'une page (facultatif)" },
-        { "type": "checkbox", "id": "open", "label": "Ouvert par défaut", "default": false }
       ]
     },
     {
@@ -347,11 +282,22 @@
       ]
     },
     {
+      "type": "collapsible",
+      "name": "Onglet repliable",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Titre", "default": "Entretien" },
+        { "type": "checkbox", "id": "use_description", "label": "Afficher la description du produit", "default": false },
+        { "type": "richtext", "id": "content", "label": "Contenu" },
+        { "type": "page", "id": "page", "label": "Contenu d'une page (facultatif)" },
+        { "type": "checkbox", "id": "open", "label": "Ouvert par défaut", "default": false }
+      ]
+    },
+    {
       "type": "share",
       "name": "Partager",
       "limit": 1,
       "settings": [
-        { "type": "text", "id": "label", "label": "Texte", "default": "Partager ce slogan" }
+        { "type": "text", "id": "label", "label": "Texte", "default": "Partager" }
       ]
     }
   ],

@@ -1,21 +1,18 @@
 {%- comment -%}
-  Dans les textes, [marque] est remplacé par le nom de la boutique.
+  Dans le texte « À propos », [marque] est remplacé par le nom de la boutique.
 {%- endcomment -%}
 <footer class="footer">
-  {% render 'rubalise', text: section.settings.tape_text %}
-
   <div class="footer__inner page-width">
-    <div class="footer__about">
+    <div class="footer__col footer__about">
       <p class="footer__logo">{{ shop.name }}</p>
-      {%- if section.settings.about_title != blank -%}
-        <h2 class="footer__title">{{ section.settings.about_title | escape }}</h2>
+      {%- if section.settings.about != blank -%}
+        <div class="rte footer__text">{{ section.settings.about | replace: '[marque]', shop.name }}</div>
       {%- endif -%}
-      <div class="rte">{{ section.settings.about | replace: '[marque]', shop.name }}</div>
     </div>
 
-    <nav class="footer__links" aria-label="Liens utiles">
-      <h2 class="footer__title">Infos</h2>
-      <ul role="list">
+    <nav class="footer__col" aria-label="{{ section.settings.links_title | escape }}">
+      <h2 class="footer__title">{{ section.settings.links_title | escape }}</h2>
+      <ul class="footer__links" role="list">
         {%- assign footer_menu = section.settings.menu -%}
         {%- if footer_menu != blank and footer_menu.links.size > 0 -%}
           {%- for link in footer_menu.links -%}
@@ -30,32 +27,27 @@
       </ul>
     </nav>
 
-    <div class="footer__social">
-      <h2 class="footer__title">Suis le mouvement</h2>
-      <ul class="footer__social-list" role="list">
+    <div class="footer__col">
+      <h2 class="footer__title">{{ section.settings.social_title | escape }}</h2>
+      <ul class="footer__social" role="list">
         {%- if settings.social_instagram != blank -%}
-          <li>
-            <a href="{{ settings.social_instagram }}" class="sticker-btn sticker-btn--small sticker-btn--pink" target="_blank" rel="noopener">
-              {% render 'icon', name: 'instagram' %} Instagram
-            </a>
-          </li>
+          <li><a href="{{ settings.social_instagram }}" target="_blank" rel="noopener">{% render 'icon', name: 'instagram' %}<span>Instagram</span></a></li>
         {%- endif -%}
         {%- if settings.social_tiktok != blank -%}
-          <li>
-            <a href="{{ settings.social_tiktok }}" class="sticker-btn sticker-btn--small sticker-btn--sky" target="_blank" rel="noopener">
-              {% render 'icon', name: 'tiktok' %} TikTok
-            </a>
-          </li>
+          <li><a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener">{% render 'icon', name: 'tiktok' %}<span>TikTok</span></a></li>
         {%- endif -%}
         {%- if settings.social_instagram == blank and settings.social_tiktok == blank and request.design_mode -%}
-          <li class="footer__hint">Ajoute tes liens Instagram et TikTok dans Paramètres du thème &gt; Réseaux sociaux.</li>
+          <li class="footer__hint">Ajoutez vos liens dans Paramètres du thème &gt; Réseaux sociaux.</li>
         {%- endif -%}
       </ul>
     </div>
   </div>
 
   <div class="footer__bottom page-width">
-    <p class="footer__copy">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }} &middot; {{ section.settings.tagline | escape }}</p>
+    <p class="footer__copy">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
+    {%- if section.settings.show_localization -%}
+      {% render 'localization-form', id: 'FooterLocalization' %}
+    {%- endif -%}
     {%- if section.settings.show_payment_icons -%}
       <ul class="footer__payments" role="list" aria-label="Moyens de paiement acceptés">
         {%- for type in shop.enabled_payment_types -%}
@@ -72,23 +64,23 @@
   "class": "section-footer",
   "settings": [
     {
+      "type": "richtext",
+      "id": "about",
+      "label": "Texte de présentation",
+      "info": "[marque] est remplacé par le nom de la boutique.",
+      "default": "<p>[marque] — vêtements et essentiels du quotidien.</p>"
+    },
+    { "type": "text", "id": "links_title", "label": "Titre des liens", "default": "Informations" },
+    {
       "type": "link_list",
       "id": "menu",
       "label": "Menu des liens",
       "default": "footer",
       "info": "Conseillé : Contact, CGV, Mentions légales, Politique de confidentialité, Livraison et retours."
     },
-    { "type": "text", "id": "about_title", "label": "Titre « À propos »", "default": "À propos" },
-    {
-      "type": "richtext",
-      "id": "about",
-      "label": "Texte « À propos »",
-      "info": "[marque] est remplacé par le nom de la boutique.",
-      "default": "<p>[marque] est une marque de vêtements qui récupère les mots de la rue pour les mettre sur ton dos.</p>"
-    },
-    { "type": "text", "id": "tape_text", "label": "Texte de la rubalise", "default": "Porte tes idées" },
-    { "type": "text", "id": "tagline", "label": "Signature", "default": "Porte tes idées." },
-    { "type": "checkbox", "id": "show_payment_icons", "label": "Afficher les moyens de paiement", "default": true }
+    { "type": "text", "id": "social_title", "label": "Titre des réseaux", "default": "Suivez-nous" },
+    { "type": "checkbox", "id": "show_localization", "label": "Sélecteur de devise", "default": true },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Moyens de paiement", "default": true }
   ],
   "enabled_on": { "groups": ["footer"] }
 }

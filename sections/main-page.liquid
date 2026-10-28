@@ -1,7 +1,7 @@
 <section class="page-width page-content">
-  {% render 'pancarte-title', title: page.title, style: section.settings.title_style, tag: 'h1' %}
-  <div class="rte page-content__body">
-    {{ page.content }}
+  <div class="narrow">
+    <h1 class="page-title">{{ page.title | escape }}</h1>
+    <div class="rte">{{ page.content }}</div>
   </div>
 </section>
 
@@ -10,19 +10,6 @@
   "name": "Page",
   "tag": "div",
   "class": "section-main-page",
-  "settings": [
-    {
-      "type": "select",
-      "id": "title_style",
-      "label": "Style du titre",
-      "options": [
-        { "value": "pancarte", "label": "Pancarte en carton" },
-        { "value": "sticker", "label": "Sticker" },
-        { "value": "mur", "label": "Tag sur un mur" },
-        { "value": "bitume", "label": "Affiche de propagande" }
-      ],
-      "default": "pancarte"
-    }
-  ]
+  "settings": []
 }
 {% endschema %}

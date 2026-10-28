@@ -103,12 +103,12 @@
 
       <div class="cart__footer">
         {%- if settings.cart_note_offer != blank -%}
-          <p class="cart__offer sticker-note">{{ settings.cart_note_offer | escape }}</p>
+          <p class="cart__offer">{{ settings.cart_note_offer | escape }}</p>
         {%- endif -%}
 
         {%- if settings.cart_show_note -%}
           <label class="cart__note">
-            <span>Un mot pour nous ?</span>
+            <span>Instructions pour la commande</span>
             <textarea name="note" class="input" rows="2">{{ cart.note }}</textarea>
           </label>
         {%- endif -%}
@@ -123,13 +123,13 @@
         </p>
         <p class="cart__taxes">
           {%- if cart.taxes_included -%}TVA incluse. {% endif -%}
-          Livraison et réductions calculées au paiement.
+          Frais de livraison et codes promo calculés lors du paiement.
         </p>
 
         <noscript>
-          <button type="submit" name="update" class="sticker-btn sticker-btn--small sticker-btn--paper">{{ 'cart.update' | t }}</button>
+          <button type="submit" name="update" class="button button--small button--outline">{{ 'cart.update' | t }}</button>
         </noscript>
-        <button type="submit" name="checkout" class="sticker-btn sticker-btn--red sticker-btn--large cart__checkout">
+        <button type="submit" name="checkout" class="button button--full cart__checkout">
           {{- 'cart.checkout' | t -}}
         </button>
         {%- if additional_checkout_buttons and context == 'page' -%}
@@ -140,8 +140,7 @@
   {%- else -%}
     <div class="cart__empty">
       <p class="cart__empty-title">{{ 'cart.empty' | t }}</p>
-      <p>Ton panier n'a encore rien à dire. Donne-lui des idées.</p>
-      <a href="{{ routes.all_products_collection_url }}" class="sticker-btn sticker-btn--yellow">{{ 'cart.empty_cta' | t }}</a>
+            <a href="{{ routes.all_products_collection_url }}" class="button">{{ 'cart.empty_cta' | t }}</a>
     </div>
   {%- endif -%}
 </div>

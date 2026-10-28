@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="{{ settings.color_paper }}">
+    <meta name="theme-color" content="{{ settings.color_background }}">
     <link rel="canonical" href="{{ canonical_url }}">
 
     {%- if settings.favicon != blank -%}
@@ -26,7 +26,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Permanent+Marker&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     {% render 'css-variables' %}
     {{ 'base.css' | asset_url | stylesheet_tag }}
@@ -42,11 +42,13 @@
           productRecommendations: {{ routes.product_recommendations_url | json }}
         },
         cartType: {{ settings.cart_type | json }},
+        showCurrencyCode: {{ settings.currency_code_enabled | json }},
         strings: {
           addToCart: {{ 'products.product.add_to_cart' | t | json }},
           soldOut: {{ 'products.product.sold_out' | t | json }},
           unavailable: {{ 'products.product.unavailable' | t | json }},
-          cartError: {{ 'cart.error' | t | json }}
+          cartError: {{ 'cart.error' | t | json }},
+          linkCopied: {{ 'products.product.link_copied' | t | json }}
         }
       };
     </script>
@@ -55,7 +57,7 @@
     {{ content_for_header }}
   </head>
 
-  <body class="template-{{ template.name | handle }}{% if template.suffix %} template-{{ template.suffix | handle }}{% endif %}{% unless settings.enable_tilt %} no-tilt{% endunless %}{% unless settings.enable_animations %} no-anim{% endunless %}">
+  <body class="template-{{ template.name | handle }}{% if template.suffix %} template-{{ template.suffix | handle }}{% endif %}{% unless settings.enable_animations %} no-anim{% endunless %}">
     <a class="skip-link" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
 
     {% sections 'header-group' %}

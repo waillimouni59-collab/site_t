@@ -6,8 +6,8 @@
       "type": "footer",
       "settings": {
         "menu": "footer",
-        "about_title": "À propos",
-        "about": "<p>[marque] est une marque de vêtements qui récupère les mots de la rue pour les mettre sur ton dos.</p>",
+        "about": "<p>[marque] — vêtements et essentiels du quotidien.</p>",
+        "show_localization": true,
         "show_payment_icons": true
       }
     }

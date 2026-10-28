@@ -1,31 +1,23 @@
 {%- comment -%}
-  Bandeau défilant. Le contenu est dupliqué pour une boucle continue ;
-  la copie est masquée aux lecteurs d'écran.
+  Bandeau d'annonce sobre. Plusieurs messages défilent en fondu.
 {%- endcomment -%}
 {%- if section.blocks.size > 0 -%}
   <div
-    class="marquee marquee--{{ section.settings.background }}"
-    style="--marquee-duration: {{ section.settings.speed }}s;"
+    class="announcement"
     role="region"
     aria-label="Annonces"
-    {{ section.shopify_attributes }}
+    data-announcement
+    data-speed="{{ section.settings.autoplay_speed }}"
   >
-    <div class="marquee__track">
-      {%- for i in (1..2) -%}
-        <ul class="marquee__list"{% if i == 2 %} aria-hidden="true"{% endif %}>
-          {%- for n in (1..3) -%}
-            {%- for block in section.blocks -%}
-              <li class="marquee__item"{% if i == 1 and n == 1 %} {{ block.shopify_attributes }}{% endif %}>
-                {%- if block.settings.link != blank -%}
-                  <a href="{{ block.settings.link }}"{% if i == 2 or n > 1 %} tabindex="-1"{% endif %}>{{ block.settings.text | escape }}</a>
-                {%- else -%}
-                  {{ block.settings.text | escape }}
-                {%- endif -%}
-              </li>
-              <li class="marquee__sep" aria-hidden="true">•</li>
-            {%- endfor -%}
-          {%- endfor -%}
-        </ul>
+    <div class="announcement__inner page-width">
+      {%- for block in section.blocks -%}
+        <p class="announcement__message{% if forloop.first %} is-active{% endif %}" {{ block.shopify_attributes }} {% unless forloop.first %}aria-hidden="true"{% endunless %}>
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}">{{ block.settings.text | escape }}</a>
+          {%- else -%}
+            {{ block.settings.text | escape }}
+          {%- endif -%}
+        </p>
       {%- endfor -%}
     </div>
   </div>
@@ -33,30 +25,19 @@
 
 {% schema %}
 {
-  "name": "Bandeau défilant",
+  "name": "Bandeau d'annonce",
   "class": "section-announcement",
-  "max_blocks": 8,
+  "max_blocks": 6,
   "settings": [
     {
-      "type": "select",
-      "id": "background",
-      "label": "Couleur de fond",
-      "options": [
-        { "value": "red", "label": "Rouge / texte blanc" },
-        { "value": "ink", "label": "Noir / texte blanc" },
-        { "value": "yellow", "label": "Jaune / texte noir" }
-      ],
-      "default": "red"
-    },
-    {
       "type": "range",
-      "id": "speed",
-      "label": "Durée d'un tour",
-      "min": 10,
-      "max": 80,
-      "step": 5,
+      "id": "autoplay_speed",
+      "label": "Changement de message toutes les",
+      "min": 3,
+      "max": 10,
+      "step": 1,
       "unit": "s",
-      "default": 30
+      "default": 5
     }
   ],
   "blocks": [
@@ -64,19 +45,15 @@
       "type": "message",
       "name": "Message",
       "settings": [
-        { "type": "text", "id": "text", "label": "Texte", "default": "Porte tes idées" },
+        { "type": "text", "id": "text", "label": "Texte", "default": "Livraison offerte en France dès 60 €" },
         { "type": "url", "id": "link", "label": "Lien" }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Bandeau défilant",
-      "blocks": [
-        { "type": "message", "settings": { "text": "Livraison offerte dès 60 €" } },
-        { "type": "message", "settings": { "text": "3 t-shirts achetés = le 4e offert" } },
-        { "type": "message", "settings": { "text": "Porte tes idées" } }
-      ]
+      "name": "Bandeau d'annonce",
+      "blocks": [{ "type": "message" }]
     }
   ],
   "enabled_on": { "groups": ["header"] }

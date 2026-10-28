@@ -1,0 +1,60 @@
+{%- assign heading_id = 'Heading-' | append: section.id -%}
+<section class="section" aria-labelledby="{{ heading_id }}">
+  <div class="page-width">
+    {%- if section.settings.title != blank -%}
+      <div class="section__head">
+        <h2 id="{{ heading_id }}" class="section__title">{{ section.settings.title | escape }}</h2>
+      </div>
+    {%- endif -%}
+
+    <ul class="collection-list collection-list--{{ section.blocks.size | at_most: 4 }}" role="list">
+      {%- for block in section.blocks -%}
+        {%- assign c = block.settings.collection -%}
+        <li class="collection-list__item reveal" style="--delay: {{ forloop.index0 | times: 60 }}ms;" {{ block.shopify_attributes }}>
+          <a href="{{ c.url | default: routes.collections_url }}" class="collection-tile">
+            <span class="collection-tile__media">
+              {%- assign tile_image = block.settings.image | default: c.featured_image | default: c.products.first.featured_media.preview_image -%}
+              {%- if tile_image != blank -%}
+                {{ tile_image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1200', sizes: '(min-width: 990px) 33vw, 100vw', alt: '' }}
+              {%- else -%}
+                {{ 'collection-apparel-1' | placeholder_svg_tag: 'placeholder' }}
+              {%- endif -%}
+            </span>
+            <span class="collection-tile__title">
+              {{- block.settings.title | default: c.title | default: 'Collection' | escape -}}
+            </span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Liste de collections",
+  "tag": "div",
+  "class": "section-collection-list",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "Collections" }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "title", "label": "Titre (facultatif)" },
+        { "type": "image_picker", "id": "image", "label": "Image (facultatif)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Liste de collections",
+      "blocks": [{ "type": "collection" }, { "type": "collection" }, { "type": "collection" }]
+    }
+  ]
+}
+{% endschema %}

@@ -1,8 +1,8 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Porte tes idées",
-    "theme_version": "1.0.0",
+    "theme_name": "Essentiel",
+    "theme_version": "2.0.0",
     "theme_author": "waillimouni59-collab",
     "theme_documentation_url": "https://github.com/waillimouni59-collab/site_t",
     "theme_support_url": "https://github.com/waillimouni59-collab/site_t/issues"
@@ -10,17 +10,16 @@
   {
     "name": "Couleurs",
     "settings": [
-      {
-        "type": "paragraph",
-        "content": "Palette de la rue : papier blanc cassé, encre noire, rouge manif et les touches de couleur des designs."
-      },
-      { "type": "color", "id": "color_paper", "label": "Fond (blanc cassé)", "default": "#F4F0E6" },
-      { "type": "color", "id": "color_ink", "label": "Texte (noir profond)", "default": "#111111" },
-      { "type": "color", "id": "color_red", "label": "Accent (rouge vif)", "default": "#D11A1F" },
-      { "type": "color", "id": "color_yellow", "label": "Jaune", "default": "#FFD400" },
-      { "type": "color", "id": "color_pink", "label": "Rose", "default": "#FF8FC7" },
-      { "type": "color", "id": "color_sky", "label": "Bleu ciel", "default": "#8FD3FF" },
-      { "type": "color", "id": "color_kraft", "label": "Carton kraft", "default": "#C9A46A" }
+      { "type": "color", "id": "color_background", "label": "Fond", "default": "#FFFFFF" },
+      { "type": "color", "id": "color_text", "label": "Texte", "default": "#111111" },
+      { "type": "color", "id": "color_text_muted", "label": "Texte secondaire (prix, infos)", "default": "#6B6B6B" },
+      { "type": "color", "id": "color_border", "label": "Bordures", "default": "#E6E6E6" },
+      { "type": "color", "id": "color_surface", "label": "Fond des images produits", "default": "#F5F5F5" },
+      { "type": "color", "id": "color_button", "label": "Boutons", "default": "#111111" },
+      { "type": "color", "id": "color_button_text", "label": "Texte des boutons", "default": "#FFFFFF" },
+      { "type": "color", "id": "color_announcement_bg", "label": "Bandeau d'annonce : fond", "default": "#1F1F1F" },
+      { "type": "color", "id": "color_announcement_text", "label": "Bandeau d'annonce : texte", "default": "#FFFFFF" },
+      { "type": "color", "id": "color_sale", "label": "Prix promo", "default": "#B3122B" }
     ]
   },
   {
@@ -31,22 +30,22 @@
         "id": "page_width",
         "label": "Largeur maximale de la page",
         "min": 1000,
-        "max": 1600,
+        "max": 2000,
         "step": 20,
         "unit": "px",
-        "default": 1400
+        "default": 1840
       },
       {
         "type": "checkbox",
-        "id": "enable_tilt",
-        "label": "Rotations « fait main » (-2° à 2°)",
+        "id": "uppercase_titles",
+        "label": "Titres et menu en majuscules",
         "default": true
       },
       {
         "type": "checkbox",
         "id": "enable_animations",
-        "label": "Animations au scroll",
-        "info": "Désactivées automatiquement si le visiteur a demandé moins d'animations.",
+        "label": "Apparition douce au scroll",
+        "info": "Désactivée automatiquement si le visiteur a demandé moins d'animations.",
         "default": true
       },
       {
@@ -54,6 +53,18 @@
         "id": "favicon",
         "label": "Favicon",
         "info": "32 × 32 px, PNG"
+      }
+    ]
+  },
+  {
+    "name": "Prix",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "currency_code_enabled",
+        "label": "Afficher le code de la devise",
+        "info": "Ex. 35,00 € EUR",
+        "default": false
       }
     ]
   },
@@ -74,9 +85,9 @@
         "type": "range",
         "id": "free_shipping_threshold",
         "label": "Seuil de livraison offerte",
-        "info": "Sert à calculer la barre de progression. Pense à créer le tarif d'expédition gratuit correspondant dans Paramètres > Expédition.",
+        "info": "0 pour masquer la barre. Pense à créer le tarif gratuit correspondant dans Paramètres > Expédition.",
         "min": 0,
-        "max": 200,
+        "max": 300,
         "step": 5,
         "unit": "€",
         "default": 60
@@ -84,8 +95,8 @@
       {
         "type": "text",
         "id": "cart_note_offer",
-        "label": "Message promo dans le panier",
-        "default": "3 t-shirts achetés = le 4e offert"
+        "label": "Message dans le panier (facultatif)",
+        "info": "Ex. une offre en cours"
       },
       {
         "type": "checkbox",
@@ -96,35 +107,34 @@
     ]
   },
   {
-    "name": "Produits",
+    "name": "Cartes produits",
     "settings": [
-      {
-        "type": "checkbox",
-        "id": "card_show_back",
-        "label": "Afficher le dos du t-shirt au survol",
-        "info": "Utilise la 2e image du produit.",
-        "default": true
-      },
       {
         "type": "select",
         "id": "card_ratio",
-        "label": "Format des images produits",
+        "label": "Format des images",
         "options": [
           { "value": "1 / 1", "label": "Carré" },
           { "value": "4 / 5", "label": "Portrait" },
-          { "value": "4 / 3", "label": "Paysage" }
+          { "value": "3 / 4", "label": "Portrait allongé" }
         ],
         "default": "1 / 1"
       },
       {
         "type": "select",
         "id": "card_fit",
-        "label": "Cadrage des images produits",
+        "label": "Cadrage des images",
         "options": [
           { "value": "contain", "label": "Image entière" },
           { "value": "cover", "label": "Remplir le cadre" }
         ],
         "default": "contain"
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_back",
+        "label": "Afficher la 2e image au survol",
+        "default": true
       },
       {
         "type": "checkbox",

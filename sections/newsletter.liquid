@@ -1,52 +1,47 @@
 {%- assign heading_id = 'Heading-' | append: section.id -%}
 <section class="newsletter" aria-labelledby="{{ heading_id }}">
   <div class="page-width newsletter__inner">
-    <div class="newsletter__poster reveal">
-      <span class="tape tape--tl"></span>
-      <span class="tape tape--tr"></span>
-      {% render 'pancarte-title', title: section.settings.title, style: 'pancarte', id: heading_id %}
-      {%- if section.settings.text != blank -%}
-        <div class="rte newsletter__text">{{ section.settings.text }}</div>
-      {%- endif -%}
+    <h2 id="{{ heading_id }}" class="section__title">{{ section.settings.title | escape }}</h2>
+    {%- if section.settings.text != blank -%}
+      <div class="rte newsletter__text">{{ section.settings.text }}</div>
+    {%- endif -%}
 
-      {%- form 'customer', id: 'NewsletterForm', class: 'newsletter__form' -%}
-        <input type="hidden" name="contact[tags]" value="newsletter">
-        {%- if form.posted_successfully? -%}
-          <p class="form-message form-message--success" role="status" tabindex="-1" autofocus>
-            {{ section.settings.success | escape }}
+    {%- assign form_id = 'NewsletterForm-' | append: section.id -%}
+    {%- form 'customer', id: form_id, class: 'newsletter__form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      {%- if form.posted_successfully? -%}
+        <p class="form-message form-message--success" role="status" tabindex="-1" autofocus>
+          {{ section.settings.success | escape }}
+        </p>
+      {%- else -%}
+        <div class="newsletter__field">
+          <label class="visually-hidden" for="NewsletterEmail-{{ section.id }}">Adresse e-mail</label>
+          <input
+            id="NewsletterEmail-{{ section.id }}"
+            class="input"
+            type="email"
+            name="contact[email]"
+            value="{{ form.email }}"
+            placeholder="Adresse e-mail"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            required
+            {% if form.errors %}aria-invalid="true" aria-describedby="NewsletterError-{{ section.id }}"{% endif %}
+          >
+          <button type="submit" class="button" name="commit">{{ section.settings.button_label | escape }}</button>
+        </div>
+        {%- if form.errors -%}
+          <p id="NewsletterError-{{ section.id }}" class="form-message form-message--error" role="alert">
+            {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
           </p>
-        {%- else -%}
-          <div class="newsletter__field">
-            <label class="visually-hidden" for="NewsletterEmail-{{ section.id }}">Ton adresse e-mail</label>
-            <input
-              id="NewsletterEmail-{{ section.id }}"
-              class="input"
-              type="email"
-              name="contact[email]"
-              value="{{ form.email }}"
-              placeholder="ton@email.fr"
-              autocomplete="email"
-              autocorrect="off"
-              autocapitalize="off"
-              required
-              {% if form.errors %}aria-invalid="true" aria-describedby="NewsletterError-{{ section.id }}"{% endif %}
-            >
-            <button type="submit" class="sticker-btn sticker-btn--red" name="commit">
-              {{- section.settings.button_label | escape -}}
-            </button>
-          </div>
-          {%- if form.errors -%}
-            <p id="NewsletterError-{{ section.id }}" class="form-message form-message--error" role="alert">
-              {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
-            </p>
-          {%- endif -%}
         {%- endif -%}
-      {%- endform -%}
-
-      {%- if section.settings.legal != blank -%}
-        <div class="newsletter__legal">{{ section.settings.legal }}</div>
       {%- endif -%}
-    </div>
+    {%- endform -%}
+
+    {%- if section.settings.legal != blank -%}
+      <div class="newsletter__legal">{{ section.settings.legal }}</div>
+    {%- endif -%}
   </div>
 </section>
 
@@ -56,20 +51,20 @@
   "tag": "div",
   "class": "section-newsletter",
   "settings": [
-    { "type": "text", "id": "title", "label": "Titre", "default": "Rejoins le mouvement" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Newsletter" },
     {
       "type": "richtext",
       "id": "text",
       "label": "Texte",
-      "default": "<p>Les nouveaux drops, les slogans trouvés dans la semaine et zéro spam. Promis, on n'écrit que quand on a quelque chose à dire.</p>"
+      "default": "<p>Inscrivez-vous pour être informé des nouveautés et des réassorts.</p>"
     },
-    { "type": "text", "id": "button_label", "label": "Texte du bouton", "default": "Je m'inscris" },
-    { "type": "text", "id": "success", "label": "Message de confirmation", "default": "Bienvenue dans le mouvement ! Check ta boîte mail." },
+    { "type": "text", "id": "button_label", "label": "Texte du bouton", "default": "S'inscrire" },
+    { "type": "text", "id": "success", "label": "Message de confirmation", "default": "Merci, votre inscription est confirmée." },
     {
       "type": "richtext",
       "id": "legal",
       "label": "Mention RGPD",
-      "default": "<p>En t'inscrivant, tu acceptes de recevoir nos e-mails. Tu peux te désinscrire à tout moment via le lien en bas de chaque message. Tes données ne sont ni vendues ni partagées. Plus d'infos dans notre politique de confidentialité.</p>"
+      "default": "<p>En vous inscrivant, vous acceptez de recevoir nos e-mails. Vous pouvez vous désinscrire à tout moment grâce au lien présent dans chaque message. Vos données ne sont ni vendues ni partagées.</p>"
     }
   ],
   "presets": [{ "name": "Newsletter" }]

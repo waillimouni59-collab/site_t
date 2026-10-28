@@ -1,0 +1,24 @@
+{%- comment -%}
+  Sélecteur de pays / devise (Shopify Markets). Affiché seulement
+  si plusieurs pays sont disponibles.
+
+  Accepte :
+  - id : {String} identifiant unique du formulaire
+{%- endcomment -%}
+{%- if localization.available_countries.size > 1 -%}
+  {%- form 'localization', id: id, class: 'localization' -%}
+    <label class="visually-hidden" for="{{ id }}-select">{{ 'accessibility.country' | t }}</label>
+    <span class="localization__current" aria-hidden="true">
+      {{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }}
+      {% render 'icon', name: 'chevron' %}
+    </span>
+    <select id="{{ id }}-select" name="country_code" class="localization__select" data-localization-select>
+      {%- for country in localization.available_countries -%}
+        <option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>
+          {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+        </option>
+      {%- endfor -%}
+    </select>
+    <noscript><button type="submit" class="button button--small">OK</button></noscript>
+  {%- endform -%}
+{%- endif -%}

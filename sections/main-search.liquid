@@ -1,18 +1,18 @@
 {%- paginate search.results by 24 -%}
   <section class="page-width search-page">
-    {% render 'pancarte-title', title: 'Recherche', style: 'sticker', tag: 'h1' %}
+    <h1 class="page-title">Recherche</h1>
 
     <form action="{{ routes.search_url }}" method="get" role="search" class="search-page__form">
       <label class="visually-hidden" for="SearchPageInput">Rechercher</label>
-      <input id="SearchPageInput" class="input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="Un slogan, une couleur…">
+      <input id="SearchPageInput" class="input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="Rechercher un article">
       <input type="hidden" name="options[prefix]" value="last">
-      <button type="submit" class="sticker-btn sticker-btn--red">Chercher</button>
+      <button type="submit" class="button">Rechercher</button>
     </form>
 
     {%- if search.performed -%}
       <p class="search-page__count" role="status">
         {%- if search.results_count == 0 -%}
-          Aucun résultat pour « {{ search.terms | escape }} ». Essaie un autre mot, ou propose-nous ce slogan !
+          Aucun résultat pour « {{ search.terms | escape }} ».
         {%- else -%}
           {{ search.results_count }} résultat{% if search.results_count > 1 %}s{% endif %} pour « {{ search.terms | escape }} »
         {%- endif -%}

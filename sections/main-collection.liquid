@@ -1,31 +1,15 @@
 {%- comment -%}
-  Page collection : titre façon pancarte, filtres (couleur, taille, prix) et grille.
+  Page collection : titre, filtres (couleur, taille, prix), tri et grille.
   Les filtres viennent de Shopify (app gratuite « Search & Discovery »).
 {%- endcomment -%}
-{%- liquid
-  assign style = section.settings.title_style
-  assign coll_handle = collection.handle
-  case coll_handle
-    when 'pancartes'
-      assign style = 'pancarte'
-    when 'stickers'
-      assign style = 'sticker'
-    when 'murs'
-      assign style = 'mur'
-    when 'bitume'
-      assign style = 'bitume'
-  endcase
-  assign sort_by = collection.sort_by | default: collection.default_sort_by
--%}
+{%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
 
-<div class="collection collection--{{ style }}" data-collection-section data-section-id="{{ section.id }}">
-  <header class="collection__hero showcase showcase--{{ style }}">
-    <div class="page-width">
-      {% render 'pancarte-title', title: collection.title, style: style, tag: 'h1' %}
-      {%- if collection.description != blank -%}
-        <div class="rte collection__description">{{ collection.description }}</div>
-      {%- endif -%}
-    </div>
+<div class="collection" data-collection-section data-section-id="{{ section.id }}">
+  <header class="collection__head page-width">
+    <h1 class="page-title">{{ collection.title | escape }}</h1>
+    {%- if collection.description != blank and section.settings.show_description -%}
+      <div class="rte collection__description">{{ collection.description }}</div>
+    {%- endif -%}
   </header>
 
   {%- paginate collection.products by section.settings.per_page -%}
@@ -33,7 +17,7 @@
       <form class="filters" action="{{ collection.url }}" method="get" data-filters-form>
         <div class="filters__bar">
           <p class="filters__count" role="status">
-            {{ collection.products_count }} t-shirt{% if collection.products_count > 1 %}s{% endif %}
+            {{ collection.products_count }} article{% if collection.products_count > 1 %}s{% endif %}
           </p>
 
           {%- if section.settings.enable_filters and collection.filters.size > 0 -%}
@@ -124,7 +108,7 @@
             </label>
           {%- endif -%}
 
-          <noscript><button type="submit" class="sticker-btn sticker-btn--small">Filtrer</button></noscript>
+          <noscript><button type="submit" class="button button--small">Filtrer</button></noscript>
         </div>
 
         {%- liquid
@@ -169,9 +153,9 @@
         </div>
       {%- else -%}
         <div class="empty-state">
-          <p class="empty-state__title">Rien ici… pour l'instant.</p>
-          <p>Aucun t-shirt ne correspond à ces filtres. Même nous, on n'a pas tous les slogans.</p>
-          <a href="{{ collection.url }}" class="sticker-btn">Effacer les filtres</a>
+          <p class="empty-state__title">Aucun produit trouvé</p>
+          <p>Aucun article ne correspond à ces filtres.</p>
+          <a href="{{ collection.url }}" class="button button--outline">Effacer les filtres</a>
         </div>
       {%- endif -%}
 
@@ -186,19 +170,7 @@
   "tag": "section",
   "class": "section-main-collection",
   "settings": [
-    {
-      "type": "select",
-      "id": "title_style",
-      "label": "Style du titre par défaut",
-      "info": "Les collections pancartes, stickers, murs et bitume ont automatiquement leur ambiance.",
-      "options": [
-        { "value": "pancarte", "label": "Pancarte en carton" },
-        { "value": "sticker", "label": "Sticker" },
-        { "value": "mur", "label": "Tag sur un mur" },
-        { "value": "bitume", "label": "Affiche de propagande" }
-      ],
-      "default": "pancarte"
-    },
+    { "type": "checkbox", "id": "show_description", "label": "Afficher la description de la collection", "default": true },
     {
       "type": "range",
       "id": "per_page",

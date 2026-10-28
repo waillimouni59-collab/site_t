@@ -1,0 +1,45 @@
+<section class="section rich-text rich-text--{{ section.settings.align }}">
+  <div class="page-width rich-text__inner">
+    {%- if section.settings.title != blank -%}
+      <h2 class="section__title">{{ section.settings.title | escape }}</h2>
+    {%- endif -%}
+    {%- if section.settings.text != blank -%}
+      <div class="rte rich-text__text">{{ section.settings.text }}</div>
+    {%- endif -%}
+    {%- if section.settings.button_label != blank -%}
+      <a href="{{ section.settings.button_link | default: routes.all_products_collection_url }}" class="button button--outline">
+        {{- section.settings.button_label | escape -}}
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Texte",
+  "tag": "div",
+  "class": "section-rich-text",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "À propos" },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texte",
+      "default": "<p>Présentez votre marque en quelques lignes : vos matières, votre fabrication, votre façon de travailler.</p>"
+    },
+    { "type": "text", "id": "button_label", "label": "Texte du bouton" },
+    { "type": "url", "id": "button_link", "label": "Lien du bouton" },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignement",
+      "options": [
+        { "value": "center", "label": "Centré" },
+        { "value": "left", "label": "À gauche" }
+      ],
+      "default": "center"
+    }
+  ],
+  "presets": [{ "name": "Texte" }]
+}
+{% endschema %}

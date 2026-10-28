@@ -1,40 +1,37 @@
 {%- comment -%}
-  Icônes au trait « dessiné à la main ».
+  Icônes au trait fin.
   Accepte :
-  - name : {String} menu, close, search, account, cart, truck, chat, lock, return, heart, arrow, plus, minus, instagram, tiktok
-  - class : {String} classe CSS (facultatif)
+  - name : {String} menu, close, search, account, cart, chevron, arrow, plus, minus, truck, return, lock, chat, instagram, tiktok
 {%- endcomment -%}
-{%- assign icon_class = 'icon icon--' | append: name -%}
-{%- if class -%}{%- assign icon_class = icon_class | append: ' ' | append: class -%}{%- endif -%}
 {%- case name -%}
   {%- when 'menu' -%}
-    <svg class="{{ icon_class }}" aria-hidden="true" focusable="false" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9.5c7-.8 14.5-.6 22 .3"/><path d="M5.5 16.2c6.8.5 13.7-.3 21-.4"/><path d="M5 22.8c7.6-.6 14.2.4 22.2-.2"/></svg>
+    <svg class="icon icon--menu" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
   {%- when 'close' -%}
-    <svg class="{{ icon_class }}" aria-hidden="true" focusable="false" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M7 7.5c6 5.4 11.6 11 18 17.4"/><path d="M25.3 6.6C19 12.4 13 18.6 6.8 25.2"/></svg>
+    <svg class="icon icon--close" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
   {%- when 'search' -%}
-    <svg class="{{ icon_class }}" aria-hidden="true" focusable="false" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13.6 4.8c-5 .2-8.9 4.3-8.6 9.3.3 4.8 4.4 8.4 9.2 8 4.7-.4 8.2-4.6 7.8-9.3-.4-4.6-4-8.1-8.4-8Z"/><path d="M20.6 20.4c2 2.1 4.2 4.1 6.6 6.4"/></svg>
+    <svg class="icon icon--search" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>
   {%- when 'account' -%}
-    <svg class="{{ icon_class }}" aria-hidden="true" focusable="false" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16.2 5c-3.2-.1-5.6 2.5-5.5 5.6.1 3.1 2.6 5.4 5.7 5.3 3-.1 5.3-2.7 5.1-5.7C21.3 7.3 19 5 16.2 5Z"/><path d="M5.6 27.2c1.3-5.4 5.4-8.4 10.6-8.3 5.1.1 9.2 3.4 10.2 8.4"/></svg>
+    <svg class="icon icon--account" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4.2"/><path d="M4 21c.9-4.2 4.1-6.6 8-6.6s7.1 2.4 8 6.6"/></svg>
   {%- when 'cart' -%}
-    <svg class="{{ icon_class }}" aria-hidden="true" focusable="false" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.2 10.4c6.6-.4 13.2-.3 19.8.2l-1.6 16.2c-5.6.4-11 .3-16.6-.2L6.2 10.4Z"/><path d="M11.4 13.2c-.4-4.4 1.6-7.8 4.8-7.9 3.3-.1 5 3.2 4.6 7.6"/></svg>
-  {%- when 'truck' -%}
-    <svg class="{{ icon_class }}" aria-hidden="true" focusable="false" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17.5c9.6-.7 19.2-.6 29 .1.4 7.8.3 15.4-.2 23.2-9.3.4-18.6.3-28.2-.2-.6-7.6-.8-15.3-.6-23.1Z"/><path d="M34.5 24.6c5.1-.3 9.6-.1 14 .4 3.4 3.8 6.4 7.8 9.4 12 .2 1.4.2 2.6 0 4-7.6.4-15.4.4-23.2 0"/><path d="M15.4 40.7c-3.1-.1-5.4 2.3-5.3 5.2.1 2.8 2.4 5 5.3 4.9 2.8-.1 5-2.4 4.9-5.2-.1-2.7-2.3-4.8-4.9-4.9Z"/><path d="M46 40.5c-3-.1-5.3 2.3-5.2 5.2.1 2.8 2.4 5 5.2 4.9 2.9-.1 5-2.5 4.9-5.2-.1-2.8-2.3-4.8-4.9-4.9Z"/><path d="M39.3 26.8c-.2 2.8-.1 5.4.2 8 4.6.3 9 .2 13.5-.2"/></svg>
-  {%- when 'chat' -%}
-    <svg class="{{ icon_class }}" aria-hidden="true" focusable="false" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9.6 12.4c14.8-1.6 29.4-1.4 44.6.4 1.4 8.4 1.5 16.6.2 25.2-7.6 1-15.4 1.3-23.2 1-4.7 4.3-9.6 8-15.2 11.4 1.2-4 2.2-7.8 2.8-11.9-3.2-.2-6.2-.6-9.2-1.2-1.4-8.4-1.3-16.6 0-24.9Z"/><path d="M20 22.6c8.4-.6 16.4-.4 24.4.3"/><path d="M20.4 29.4c5.8-.3 11.4-.2 16.8.2"/></svg>
-  {%- when 'lock' -%}
-    <svg class="{{ icon_class }}" aria-hidden="true" focusable="false" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12.4 27.6c13.4-1 26.4-.9 39.6.2.9 8.6.8 17.2-.4 25.8-12.8 1.2-25.8 1.2-38.8.1-1.4-8.6-1.6-17.4-.4-26.1Z"/><path d="M20.6 27.2c-.9-9 3.2-15.6 11-15.8 7.9-.2 12 6.3 11.4 15.6"/><path d="M32 37.4c-.1 3.2 0 6 .3 8.8"/></svg>
-  {%- when 'return' -%}
-    <svg class="{{ icon_class }}" aria-hidden="true" focusable="false" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M14.4 23.6c11-5.8 24.2-5 33 2.6 8.4 7.4 8.4 19.4-.4 25.6-6.6 4.6-15.4 4.8-22.6 1.4"/><path d="M13.6 12.8c.4 3.8.6 7.4.8 11.2 3.8.2 7.4.2 11 0"/></svg>
-  {%- when 'heart' -%}
-    <svg class="{{ icon_class }}" aria-hidden="true" focusable="false" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M32.2 52.4C21 44.8 10.4 36.4 10.2 24.2c-.1-7.2 5.6-12.6 12.2-12 4.4.4 7.6 3.2 9.6 7.2 2.2-4.4 5.6-7.4 10.4-7.4 6.6.2 11.6 5.8 11.2 12.6-.6 12-11.4 20.4-21.4 27.8Z"/></svg>
+    <svg class="icon icon--cart" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4h2.6l2.3 11.2h11.2L21 7.5H6.2"/><circle cx="9" cy="19.5" r="1.3"/><circle cx="17" cy="19.5" r="1.3"/></svg>
+  {%- when 'chevron' -%}
+    <svg class="icon icon--chevron" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
   {%- when 'arrow' -%}
-    <svg class="{{ icon_class }}" aria-hidden="true" focusable="false" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 16.6c7.4-.6 14.6-.5 21.6.2"/><path d="M19.4 9.2c2.4 2.4 4.8 4.8 7.2 7.6-2.4 2.4-4.8 4.6-7.4 7"/></svg>
+    <svg class="icon icon--arrow" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
   {%- when 'plus' -%}
-    <svg class="{{ icon_class }}" aria-hidden="true" focusable="false" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6.4 16.4c6.6-.5 12.8-.4 19.2.1"/><path d="M15.8 6.2c.4 6.6.4 13 0 19.6"/></svg>
+    <svg class="icon icon--plus" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
   {%- when 'minus' -%}
-    <svg class="{{ icon_class }}" aria-hidden="true" focusable="false" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6.4 16.4c6.6-.5 12.8-.4 19.2.1"/></svg>
+    <svg class="icon icon--minus" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14"/></svg>
+  {%- when 'truck' -%}
+    <svg class="icon icon--truck" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h12v10H2zM14 9h4l3 3.5V16h-7"/><circle cx="6" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg>
+  {%- when 'return' -%}
+    <svg class="icon icon--return" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h11a5 5 0 010 10H8"/><path d="M8 5L4 9l4 4"/></svg>
+  {%- when 'lock' -%}
+    <svg class="icon icon--lock" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="1.5"/><path d="M8 10.5V7.5a4 4 0 018 0v3"/></svg>
+  {%- when 'chat' -%}
+    <svg class="icon icon--chat" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>
   {%- when 'instagram' -%}
-    <svg class="{{ icon_class }}" aria-hidden="true" focusable="false" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9.6 4.8c4.4-.4 8.6-.4 13 0 2.6.3 4.4 2.2 4.6 4.8.4 4.4.4 8.6 0 13-.2 2.6-2.2 4.4-4.8 4.6-4.4.3-8.6.3-12.8 0-2.6-.2-4.4-2.2-4.6-4.8-.4-4.2-.4-8.6 0-12.8.2-2.6 2-4.6 4.6-4.8Z"/><path d="M16.2 11c-2.9-.1-5.2 2.3-5.1 5.2.1 2.8 2.4 5 5.2 4.9 2.8-.1 5-2.5 4.9-5.2-.1-2.7-2.3-4.8-5-4.9Z"/><path d="M22.8 9.2v.2"/></svg>
+    <svg class="icon icon--instagram" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.9" fill="currentColor" stroke="none"/></svg>
   {%- when 'tiktok' -%}
-    <svg class="{{ icon_class }}" aria-hidden="true" focusable="false" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M17.6 4.6c.2 6.4.1 12.6-.2 18.8-.2 2.8-2.6 4.6-5.2 4.2-2.6-.4-4.2-2.8-3.6-5.4.6-2.4 3-3.8 5.4-3.4"/><path d="M17.8 5c.6 3.8 3.4 6.4 7.4 6.8"/></svg>
+    <svg class="icon icon--tiktok" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 3v11.5a3.5 3.5 0 11-3.5-3.5"/><path d="M13.5 3c.4 2.8 2.3 4.6 5 4.8"/></svg>
 {%- endcase -%}

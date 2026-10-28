@@ -1,19 +1,13 @@
 {%- comment -%}
-  Carte produit façon affiche scotchée aux coins.
-  Image recto, dos (2e image) au survol, nom, prix, pastilles de couleur, bouton « Choisir ».
+  Carte produit : image (2e image au survol), nom, prix, pastilles de couleur.
 
   Accepte :
   - product : {Object} produit (si absent, carte d'exemple)
-  - index : {Number} position dans la grille (pour la rotation et le chargement)
+  - index : {Number} position dans la grille
   - sizes : {String} attribut sizes des images (facultatif)
 {%- endcomment -%}
 {%- liquid
   assign position = index | default: 0
-  assign tilt = position | modulo: 5 | minus: 2
-  if product != blank
-    assign tilt = product.id | plus: position | modulo: 5 | minus: 2
-  endif
-  assign tilt = tilt | times: 0.6
   assign img_sizes = sizes | default: '(min-width: 990px) 25vw, 50vw'
   assign loading = 'lazy'
   if position < 4
@@ -21,7 +15,7 @@
   endif
 -%}
 
-<article class="card reveal" style="--tilt: {{ tilt }}deg; --delay: {{ position | modulo: 4 | times: 70 }}ms;">
+<article class="card reveal" style="--delay: {{ position | modulo: 4 | times: 60 }}ms;">
   {%- if product != blank -%}
     {%- liquid
       assign front = product.featured_media.preview_image
@@ -32,40 +26,37 @@
       assign front_alt = product.featured_media.alt | default: product.title
     -%}
     <a href="{{ product.url }}" class="card__media{% if back != blank %} card__media--has-back{% endif %}" tabindex="-1" aria-hidden="true">
-      <span class="tape tape--tl"></span>
-      <span class="tape tape--tr"></span>
       {%- if front != blank -%}
         {{
           front
-          | image_url: width: 1000
+          | image_url: width: 1100
           | image_tag:
             class: 'card__img card__img--front',
-            widths: '300, 450, 600, 800, 1000',
+            widths: '300, 450, 600, 800, 1100',
             sizes: img_sizes,
             loading: loading,
             alt: front_alt
         }}
         {%- if back != blank -%}
-          {%- assign back_alt = product.media[1].alt | default: product.title | append: ' — dos' -%}
           {{
             back
-            | image_url: width: 1000
+            | image_url: width: 1100
             | image_tag:
               class: 'card__img card__img--back',
-              widths: '300, 450, 600, 800, 1000',
+              widths: '300, 450, 600, 800, 1100',
               sizes: img_sizes,
               loading: 'lazy',
-              alt: back_alt
+              alt: ''
           }}
         {%- endif -%}
       {%- else -%}
         {{ 'product-apparel-1' | placeholder_svg_tag: 'card__img placeholder' }}
       {%- endif -%}
       {%- unless product.available -%}
-        <span class="card__badge card__badge--soldout">Épuisé</span>
+        <span class="badge">Épuisé</span>
       {%- else -%}
         {%- if product.compare_at_price > product.price -%}
-          <span class="card__badge">Promo</span>
+          <span class="badge badge--sale">Promo</span>
         {%- endif -%}
       {%- endunless -%}
     </a>
@@ -78,19 +69,15 @@
       {%- if settings.card_show_swatches -%}
         {% render 'swatches', product: product %}
       {%- endif -%}
-      <a href="{{ product.url }}" class="sticker-btn sticker-btn--small card__cta" aria-label="Choisir — {{ product.title | escape }}">Choisir</a>
     </div>
   {%- else -%}
     <div class="card__media">
-      <span class="tape tape--tl"></span>
-      <span class="tape tape--tr"></span>
       {%- assign placeholder_index = position | modulo: 2 | plus: 1 -%}
       {{ 'product-apparel-' | append: placeholder_index | placeholder_svg_tag: 'card__img placeholder' }}
     </div>
     <div class="card__info">
-      <h3 class="card__title">Ton slogan ici</h3>
+      <h3 class="card__title">Nom du produit</h3>
       <p class="price card__price"><span class="price__current">35,00 €</span></p>
-      <span class="sticker-btn sticker-btn--small card__cta" aria-hidden="true">Choisir</span>
     </div>
   {%- endif -%}
 </article>

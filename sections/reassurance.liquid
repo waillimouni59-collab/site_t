@@ -1,14 +1,15 @@
 <section class="reassurance" aria-label="{{ section.settings.label | escape }}">
-  {% render 'rubalise' %}
   <div class="page-width">
     <ul class="reassurance__list" role="list">
       {%- for block in section.blocks -%}
-        <li class="reassurance__item reveal" style="--delay: {{ forloop.index0 | times: 80 }}ms;" {{ block.shopify_attributes }}>
-          <span class="reassurance__icon">{% render 'icon', name: block.settings.icon %}</span>
-          <h3 class="reassurance__title">{{ block.settings.title | escape }}</h3>
-          {%- if block.settings.text != blank -%}
-            <p class="reassurance__text">{{ block.settings.text | escape }}</p>
-          {%- endif -%}
+        <li class="reassurance__item" {{ block.shopify_attributes }}>
+          {% render 'icon', name: block.settings.icon %}
+          <div>
+            <h3 class="reassurance__title">{{ block.settings.title | escape }}</h3>
+            {%- if block.settings.text != blank -%}
+              <p class="reassurance__text">{{ block.settings.text | escape }}</p>
+            {%- endif -%}
+          </div>
         </li>
       {%- endfor -%}
     </ul>
@@ -17,43 +18,42 @@
 
 {% schema %}
 {
-  "name": "Réassurance",
+  "name": "Services",
   "tag": "div",
   "class": "section-reassurance",
   "max_blocks": 4,
   "settings": [
-    { "type": "text", "id": "label", "label": "Titre (lecteurs d'écran)", "default": "Nos engagements" }
+    { "type": "text", "id": "label", "label": "Titre (lecteurs d'écran)", "default": "Nos services" }
   ],
   "blocks": [
     {
       "type": "item",
-      "name": "Engagement",
+      "name": "Service",
       "settings": [
         {
           "type": "select",
           "id": "icon",
           "label": "Icône",
           "options": [
-            { "value": "truck", "label": "Camion" },
-            { "value": "chat", "label": "Bulle" },
-            { "value": "lock", "label": "Cadenas" },
+            { "value": "truck", "label": "Livraison" },
             { "value": "return", "label": "Retour" },
-            { "value": "heart", "label": "Cœur" }
+            { "value": "lock", "label": "Paiement" },
+            { "value": "chat", "label": "Contact" }
           ],
           "default": "truck"
         },
-        { "type": "text", "id": "title", "label": "Titre", "default": "Livraison partout en France" },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Livraison offerte dès 60 €" },
         { "type": "text", "id": "text", "label": "Texte" }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Réassurance",
+      "name": "Services",
       "blocks": [
-        { "type": "item", "settings": { "icon": "truck", "title": "Livraison partout en France", "text": "Offerte dès 60 €, même en zone blanche." } },
-        { "type": "item", "settings": { "icon": "chat", "title": "Service client 7j/7", "text": "De vrais humains, qui répondent vraiment." } },
-        { "type": "item", "settings": { "icon": "lock", "title": "Paiement sécurisé", "text": "Tes idées sont publiques, tes données non." } }
+        { "type": "item", "settings": { "icon": "truck", "title": "Livraison offerte dès 60 €", "text": "Expédition rapide partout en France." } },
+        { "type": "item", "settings": { "icon": "return", "title": "Retours sous 30 jours", "text": "Échange ou remboursement, simplement." } },
+        { "type": "item", "settings": { "icon": "lock", "title": "Paiement sécurisé", "text": "Vos données sont protégées." } }
       ]
     }
   ]

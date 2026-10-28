@@ -1,4 +1,4 @@
-/* Porte tes idées — scripts du thème (sans dépendance). */
+/* Essentiel — scripts du thème (sans dépendance). */
 (() => {
   const theme = window.theme || { routes: {}, strings: {} };
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -13,7 +13,31 @@
 
   const formatMoney = (cents) => {
     const currency = (window.Shopify && Shopify.currency && Shopify.currency.active) || 'EUR';
-    return new Intl.NumberFormat(document.documentElement.lang || 'fr', { style: 'currency', currency }).format(cents / 100);
+    const amount = new Intl.NumberFormat(document.documentElement.lang || 'fr', { style: 'currency', currency }).format(cents / 100);
+    return theme.showCurrencyCode ? `${amount} ${currency}` : amount;
+  };
+
+  /* ---------- Bandeau d'annonce : messages en fondu ---------- */
+  const initAnnouncement = (root = document) => {
+    root.querySelectorAll('[data-announcement]').forEach((bar) => {
+      const messages = bar.querySelectorAll('.announcement__message');
+      if (messages.length < 2 || bar.dataset.ready || reduceMotion) return;
+      bar.dataset.ready = 'true';
+      let index = 0;
+      let paused = false;
+      bar.addEventListener('mouseenter', () => { paused = true; });
+      bar.addEventListener('mouseleave', () => { paused = false; });
+      bar.addEventListener('focusin', () => { paused = true; });
+      bar.addEventListener('focusout', () => { paused = false; });
+      setInterval(() => {
+        if (paused) return;
+        messages[index].classList.remove('is-active');
+        messages[index].setAttribute('aria-hidden', 'true');
+        index = (index + 1) % messages.length;
+        messages[index].classList.add('is-active');
+        messages[index].removeAttribute('aria-hidden');
+      }, (Number(bar.dataset.speed) || 5) * 1000);
+    });
   };
 
   /* ---------- Apparition au scroll ---------- */
@@ -174,7 +198,7 @@
         const visible = bubble.querySelector('[aria-hidden]');
         if (visible) visible.textContent = count;
         const label = bubble.querySelector('.visually-hidden');
-        if (label) label.textContent = count === 0 ? '' : `${count} article${count > 1 ? 's' : ''} dans le panier`;
+        if (label) label.textContent = count === 0 ? 'Panier vide' : `${count} article${count > 1 ? 's' : ''} dans le panier`;
         bubble.classList.remove('is-bumped');
         void bubble.offsetWidth;
         bubble.classList.add('is-bumped');
@@ -271,7 +295,7 @@
       if (share) {
         const url = share.dataset.shareUrl;
         if (navigator.share) navigator.share({ title: share.dataset.shareTitle, url }).catch(() => {});
-        else if (navigator.clipboard) navigator.clipboard.writeText(url).then(() => { share.textContent = 'Lien copié !'; });
+        else if (navigator.clipboard) navigator.clipboard.writeText(url).then(() => { share.textContent = theme.strings.linkCopied; });
       }
     });
 
@@ -348,7 +372,7 @@
     }
   };
 
-  /* ---------- « Tu aimeras aussi » ---------- */
+  /* ---------- « Vous aimerez aussi » ---------- */
   const initRecommendations = async (el) => {
     if (!el || el.dataset.loaded || !el.dataset.url) return;
     el.dataset.loaded = 'true';
@@ -380,10 +404,17 @@
   /* ---------- Démarrage ---------- */
   const initAll = (root = document) => {
     initReveal(root);
+    initAnnouncement(root);
     root.querySelectorAll('[data-product-section]').forEach(initProduct);
     root.querySelectorAll('[data-recommendations]').forEach(initRecommendations);
     root.querySelectorAll('[data-filters-form]').forEach(initFilters);
   };
+
+  // Sélecteur de pays / devise : envoi immédiat
+  document.addEventListener('change', (e) => {
+    const select = e.target.closest('[data-localization-select]');
+    if (select) select.form.submit();
+  });
 
   document.addEventListener('DOMContentLoaded', () => {
     initHeader();

@@ -1,19 +1,16 @@
 {
   "sections": {
-    "main": { "type": "main-cart", "settings": { "title": "Ton panier" } },
-    "drop": {
+    "main": { "type": "main-cart", "settings": { "title": "Panier" } },
+    "more": {
       "type": "featured-collection",
       "settings": {
-        "title": "Encore une idée ?",
-        "title_style": "sticker",
+        "title": "Vous aimerez aussi",
         "products_to_show": 4,
         "columns_desktop": 4,
-        "background": "paper",
-        "anchor": "plus-d-idees",
         "show_view_all": false,
         "view_all_label": "Tout voir"
       }
     }
   },
-  "order": ["main", "drop"]
+  "order": ["main", "more"]
 }

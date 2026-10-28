@@ -1,29 +1,27 @@
 <section class="page-width contact" aria-label="Formulaire de contact">
-  <div class="contact__paper">
-    <span class="tape tape--tl"></span>
-    <span class="tape tape--tr"></span>
+  <div class="narrow">
     {%- if section.settings.title != blank -%}
-      <h2 class="contact__title">{{ section.settings.title | escape }}</h2>
+      <h2 class="section__title">{{ section.settings.title | escape }}</h2>
     {%- endif -%}
     {%- form 'contact', id: 'ContactForm', class: 'contact__form' -%}
       {%- if form.posted_successfully? -%}
-        <p class="form-message form-message--success" role="status" tabindex="-1" autofocus>Message bien reçu. On te répond vite (même le dimanche).</p>
+        <p class="form-message form-message--success" role="status" tabindex="-1" autofocus>Merci, votre message a bien été envoyé. Nous vous répondrons rapidement.</p>
       {%- elsif form.errors -%}
         <div class="form-message form-message--error" role="alert">{{ form.errors | default_errors }}</div>
       {%- endif -%}
       <div class="field">
-        <label for="ContactName">Ton nom</label>
+        <label for="ContactName">Nom</label>
         <input class="input" id="ContactName" type="text" name="contact[name]" autocomplete="name" value="{{ form.name }}">
       </div>
       <div class="field">
-        <label for="ContactEmail">Ton e-mail <span aria-hidden="true">*</span></label>
+        <label for="ContactEmail">E-mail <span aria-hidden="true">*</span></label>
         <input class="input" id="ContactEmail" type="email" name="contact[email]" autocomplete="email" required value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
       </div>
       <div class="field">
-        <label for="ContactBody">Ton message</label>
+        <label for="ContactBody">Message</label>
         <textarea class="input" id="ContactBody" name="contact[body]" rows="6">{{ form.body }}</textarea>
       </div>
-      <button type="submit" class="sticker-btn sticker-btn--red">Envoyer</button>
+      <button type="submit" class="button">Envoyer</button>
     {%- endform -%}
   </div>
 </section>
@@ -34,7 +32,7 @@
   "tag": "div",
   "class": "section-contact-form",
   "settings": [
-    { "type": "text", "id": "title", "label": "Titre", "default": "Écris-nous" }
+    { "type": "text", "id": "title", "label": "Titre", "default": "Nous contacter" }
   ],
   "presets": [{ "name": "Formulaire de contact" }]
 }

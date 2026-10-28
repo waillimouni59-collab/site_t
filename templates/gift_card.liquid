@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="robots" content="noindex">
     <title>Carte cadeau — {{ shop.name }}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Permanent+Marker&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     {% render 'css-variables' %}
     {{ 'base.css' | asset_url | stylesheet_tag }}
     {{ content_for_header }}
@@ -14,10 +14,8 @@
   <body class="template-gift-card">
     <main class="page-width gift-card">
       <p class="header__logo-text">{{ shop.name }}</p>
-      <div class="customer__paper">
-        <span class="tape tape--tl"></span>
-        <span class="tape tape--tr"></span>
-        <h1 class="sign sign--sticker"><span class="sign__text">Ta carte cadeau</span></h1>
+      <div class="narrow">
+        <h1 class="page-title">Votre carte cadeau</h1>
         <p class="gift-card__amount">{{ gift_card.balance | money }}</p>
         {%- if gift_card.enabled == false or gift_card.expired -%}
           <p class="form-message form-message--error">Cette carte n'est plus valable.</p>
@@ -28,8 +26,8 @@
           <p>Valable jusqu'au {{ gift_card.expires_on | date: '%d/%m/%Y' }}</p>
         {%- endif -%}
         <p>
-          <a href="{{ shop.url }}" class="sticker-btn sticker-btn--red">Utiliser ma carte</a>
-          <button type="button" class="sticker-btn sticker-btn--paper" onclick="window.print()">Imprimer</button>
+          <a href="{{ shop.url }}" class="button">Utiliser la carte</a>
+          <button type="button" class="button button--outline" onclick="window.print()">Imprimer</button>
         </p>
         {%- if gift_card.pass_url -%}
           <p><a href="{{ gift_card.pass_url }}" class="link-btn">Ajouter à Apple Wallet</a></p>
