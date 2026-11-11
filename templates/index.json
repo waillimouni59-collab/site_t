@@ -6,44 +6,74 @@
         "height": "large",
         "align": "bottom-left",
         "overlay": 15,
-        "title": "Nouvelle collection",
-        "button_label": "Découvrir",
-        "button_style": "light"
+        "title": "Jeunesse en feu",
+        "button_label": "Découvrir le t-shirt",
+        "button_style": "light",
+        "image": "shopify://shop_images/banniere-jeunesse-en-feu.jpg",
+        "text": "Le t-shirt phare de la collection, imprimé sur le devant.",
+        "button_link": "shopify://products/jeunesse-en-feu"
       }
     },
     "new_arrivals": {
       "type": "featured-collection",
       "settings": {
-        "title": "Nouveautés",
+        "title": "La collection",
         "products_to_show": 8,
-        "columns_desktop": 4,
+        "columns_desktop": 5,
         "show_view_all": true,
-        "view_all_label": "Tout voir"
+        "view_all_label": "Tout voir",
+        "collection": "t-shirts"
       }
-    },
-    "collections": {
-      "type": "collection-list",
-      "blocks": {
-        "c1": { "type": "collection", "settings": { "collection": "t-shirts" } },
-        "c2": { "type": "collection", "settings": { "collection": "hoodies" } }
-      },
-      "block_order": ["c1", "c2"],
-      "settings": { "title": "Collections" }
     },
     "services": {
       "type": "reassurance",
       "blocks": {
-        "s1": { "type": "item", "settings": { "icon": "truck", "title": "Livraison offerte dès 60 €", "text": "Expédition rapide partout en France." } },
-        "s2": { "type": "item", "settings": { "icon": "return", "title": "Retours sous 30 jours", "text": "Échange ou remboursement, simplement." } },
-        "s3": { "type": "item", "settings": { "icon": "lock", "title": "Paiement sécurisé", "text": "Vos données sont protégées." } }
+        "s1": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Livraison offerte dès 60 €",
+            "text": "Expédition rapide partout en France."
+          }
+        },
+        "s2": {
+          "type": "item",
+          "settings": {
+            "icon": "return",
+            "title": "Retours sous 30 jours",
+            "text": "Échange ou remboursement, simplement."
+          }
+        },
+        "s3": {
+          "type": "item",
+          "settings": {
+            "icon": "lock",
+            "title": "Paiement sécurisé",
+            "text": "Vos données sont protégées."
+          }
+        }
       },
-      "block_order": ["s1", "s2", "s3"],
-      "settings": { "label": "Nos services" }
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {
+        "label": "Nos services"
+      }
     },
     "newsletter": {
       "type": "newsletter",
-      "settings": { "title": "Newsletter", "button_label": "S'inscrire" }
+      "settings": {
+        "title": "Newsletter",
+        "button_label": "S'inscrire"
+      }
     }
   },
-  "order": ["hero", "new_arrivals", "collections", "services", "newsletter"]
+  "order": [
+    "hero",
+    "new_arrivals",
+    "services",
+    "newsletter"
+  ]
 }

@@ -33,19 +33,12 @@ Trois façons de faire, au choix :
 ## 2. Configurer la boutique (une seule fois)
 
 1. **Langue et devise** : Paramètres > Langues : français par défaut. Paramètres > Marchés : euro (EUR). Si plusieurs pays sont activés, le sélecteur de devise apparaît dans le header et le footer.
-2. **Importer les produits** : Produits > Importer > `produits-shopify.csv`. Les images viennent directement de ce dépôt GitHub.
-3. **Collections** :
-
-   | Titre | Identifiant (handle) | Condition |
-   | --- | --- | --- |
-   | T-shirts | `t-shirts` | Tag du produit = T-shirts |
-   | Hoodies | `hoodies` | Tag du produit = Hoodies |
-
-   La collection « Tous les articles » (`/collections/all`) existe déjà par défaut.
+2. **Importer les produits** : d'abord Contenu > Fichiers > charger les images de `photos/`, puis Produits > Importer > `produits-shopify.csv`. Le CSV pointe vers ces fichiers sur le CDN Shopify (une photo par couleur, liée à ses variantes).
+3. **Collection** : T-shirts, identifiant `t-shirts`, condition Tag du produit = T-shirts, tri « Plus récent ». La collection « Tous les articles » (`/collections/all`) existe déjà par défaut.
 4. **Pages** : Boutique en ligne > Pages : « Contact », identifiant `contact`, modèle **page.contact**.
 5. **Politiques** : Paramètres > Politiques : CGV, mentions légales, politique de confidentialité, livraison et retours.
 6. **Menus** : Boutique en ligne > Navigation :
-   - `main-menu` : Accueil, T-shirts, Hoodies, Tous les articles
+   - `main-menu` : Accueil, T-shirts, Tous les articles
    - `footer` : Contact, CGV, Mentions légales, Politique de confidentialité, Livraison et retours
 7. **Filtres** : installe l'app gratuite *Shopify Search & Discovery*, puis ajoute les filtres Couleur, Taille et Prix.
 8. **Livraison offerte** : Paramètres > Expédition : ajoute un tarif gratuit à partir de 60 €. Le seuil de la barre de progression du panier se règle dans Paramètres du thème > Panier (0 pour la masquer).
@@ -63,11 +56,11 @@ Boutique en ligne > Thèmes > Personnaliser. Les sections de l'accueil se dépla
 
 ### Photos produits
 
-- Image 1 : face (image principale de la carte)
-- Image 2 : dos ou porté (affichée au survol)
-- Images suivantes : détails
+Les motifs sont imprimés sur le devant. Le dossier `photos/` contient une photo par t-shirt et par couleur (générées avec Gemini, même décor pour toute la série), plus `banniere-jeunesse-en-feu.jpg` pour la bannière d'accueil.
 
-Les produits importés n'ont qu'un mockup chacun. Ajoute une 2e photo pour activer l'effet au survol.
+- Image 1 : première couleur (image principale de la carte)
+- Image 2 : deuxième couleur (affichée au survol)
+- Chaque couleur est liée à sa photo : choisir une couleur sur la fiche produit change l'image.
 
 ## Ce que fait le thème
 
